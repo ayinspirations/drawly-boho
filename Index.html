@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drawly – Social Media Gewinnspiel</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts für Boho-Stil -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="page">
+    <header>
+      <img src="images/logo.png" alt="Drawly Logo" id="logo" />
+      <nav>
+        <ul>
+          <li><a href="#login">Login</a></li>
+          <li><a href="#modules">Module</a></li>
+          <li><a href="#pricing">Preise</a></li>
+          <li><a href="#impressum">Impressum</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Screen 1: Link-Eingabe -->
+      <section id="screen1" class="screen">
+        <h1 id="intro">Willkommen bei Drawly</h1>
+        <input type="text" id="postLink" placeholder="Link zum Social Media Post eingeben" />
+        <button onclick="showScreen('screen2')">Vorschau</button>
+      </section>
+
+      <!-- Screen 2: Vorschau -->
+      <section id="screen2" class="screen hidden">
+        <h2>Vorschau des Beitrags</h2>
+        <div class="post-preview">
+          <!-- Hier könnte eine Vorschau des Beitrags angezeigt werden -->
+          <p>Beispielvorschau des Beitrags basierend auf dem eingegebenen Link.</p>
+        </div>
+        <button onclick="showScreen('screen3')">Weiter</button>
+      </section>
+
+      <!-- Screen 3: Kriterienauswahl -->
+      <section id="screen3" class="screen hidden">
+        <h2 id="criteriaTitle">Teilnahmekriterien auswählen</h2>
+        <form id="criteriaForm">
+          <label><input type="checkbox" name="criteria" value="hashtag" /> Hashtag verwendet</label><br />
+          <label><input type="checkbox" name="criteria" value="mention" /> Benutzer markiert</label><br />
+          <label><input type="checkbox" name="criteria" value="follow" /> Seite gefolgt</label><br />
+        </form>
+        <button onclick="startDraw()">Auslosung starten</button>
+      </section>
+
+      <!-- Screen 4: Gewinneranzeige -->
+      <section id="screen4" class="screen hidden">
+        <h2 id="winnerTitle">🎉 Gewinner 🎉</h2>
+        <img id="winnerImage" src="images/profile-placeholder.png" alt="Profilbild Gewinner" />
+        <div id="winnerDisplay"></div>
+        <button onclick="takeScreenshot()">Screenshot speichern</button>
+      </section>
+    </main>
+
+    <!-- Login-Bereich -->
+    <section id="login" class="screen hidden">
+      <h2>Login / Registrierung</h2>
+      <input type="email" id="email" placeholder="E-Mail" />
+      <input type="password" id="password" placeholder="Passwort" />
+      <button onclick="register()">Registrieren</button>
+      <button onclick="login()">Einloggen</button>
+      <button onclick="logout()">Ausloggen</button>
+      <p id="userStatus"></p>
+    </section>
+
+    <!-- Sprachwahl -->
+    <footer>
+      <label for="languageSelector">Sprache:</label>
+      <select id="languageSelector" onchange="changeLanguage(this.value)">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+        <option value="tr">Türkçe</option>
+        <option value="ru">Русский</option>
+        <option value="zh">中文</option>
+      </select>
+    </footer>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <!-- html2canvas für Screenshot -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <!-- Eigenes Script -->
+  <script src="script.js"></script>
+</body>
+</html>
