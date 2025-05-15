@@ -133,7 +133,7 @@
       flex-direction: column;
       align-items: center;
       gap: 1rem;
-      background: var(--accent);
+      background: rgba(232, 220, 209, 0.9);
       padding: 1.5rem;
       border-radius: 20px;
       box-shadow: 0 6px 12px rgba(0,0,0,0.05);
@@ -164,37 +164,6 @@
         transform: translateY(0);
       }
     }
-
-    .kpi-card {
-      background: #fffaf6;
-      border: 1px solid #e6dcd5;
-      border-radius: 16px;
-      padding: 1rem;
-      width: 250px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      text-align: center;
-      font-size: 1rem;
-    }
-
-    .criteria-card {
-      background: #fffaf6;
-      border: 1px solid #e6dcd5;
-      border-radius: 16px;
-      padding: 1rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      font-size: 1rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-
-    .criteria-card input[type="checkbox"],
-    .criteria-card input[type="number"],
-    .criteria-card input[type="text"] {
-      margin-right: 10px;
-    }
   </style>
 </head>
 <body>
@@ -221,31 +190,36 @@
     <a href="#" onclick="openLoginModal()">Login</a>
   </nav>
 
+  <!-- Demo-Hinweis -->
+  <div style="background: #fff3c7; color: #5b3e31; padding: 1rem; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); max-width: 600px; margin: 1rem auto; text-align:center;">
+    <strong>Hinweis:</strong> Du befindest dich im <em>Demo-Modus</em>. Alle Funktionen sind freigeschaltet.
+  </div>
+
+  <!-- Screen 1: Linkeingabe -->
   <div id="screen1" class="screen active">
     <h2>Gewinnspiel starten</h2>
     <input type="text" id="postLink" placeholder="Link zum Post eingeben" />
     <button onclick="showScreen('screen2')">Weiter</button>
   </div>
 
-  <!-- Infoblock unterhalb von screen1 -->
-  <div id="infoblock" style="background: #fffaf6; padding: 2rem 1rem; margin: 2rem auto; max-width: 700px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+  <!-- Infoblock im Screenshot-Stil -->
+  <div id="infoblock" style="display:block; background: transparent; padding: 2rem 1rem; margin: 2rem auto; max-width: 700px;">
     <h2 style="font-family: 'Playfair Display', serif; color: var(--text); margin-bottom: 1rem;">So funktioniert Drawly</h2>
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-      <div style="display: flex; align-items: flex-start; gap: 1rem;">
-        <span style="font-size: 2rem;">🔗</span>
-        <div><strong>1. Link einfügen</strong><br/>Gib den Link zu deinem Instagram-Post ein, den du analysieren möchtest.</div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
+      <div style="background:#fff; border-radius:16px; padding:1rem; width:200px; box-shadow:0 4px 12px rgba(0,0,0,0.05); text-align:center;">
+        <div style="font-size:2rem;">🔗</div>
+        <h3 style="margin:0.5rem 0;">Link eingeben</h3>
+        <p style="font-size:0.95rem;">Füge den Link deines Posts ein</p>
       </div>
-      <div style="display: flex; align-items: flex-start; gap: 1rem;">
-        <span style="font-size: 2rem;">🧾</span>
-        <div><strong>2. Vorschau erhalten</strong><br/>Sieh dir eine Vorschau deines Posts mit Likes und Kommentaren an.</div>
+      <div style="background:#fff; border-radius:16px; padding:1rem; width:200px; box-shadow:0 4px 12px rgba(0,0,0,0.05); text-align:center;">
+        <div style="font-size:2rem;">⚙️</div>
+        <h3 style="margin:0.5rem 0;">Kriterien wählen</h3>
+        <p style="font-size:0.95rem;">Hashtag, Markierung, Follow</p>
       </div>
-      <div style="display: flex; align-items: flex-start; gap: 1rem;">
-        <span style="font-size: 2rem;">🎯</span>
-        <div><strong>3. Kriterien festlegen</strong><br/>Wähle Hashtag, Markierung oder Account-Follow – du entscheidest, wie fair dein Gewinnspiel sein soll.</div>
-      </div>
-      <div style="display: flex; align-items: flex-start; gap: 1rem;">
-        <span style="font-size: 2rem;">🎉</span>
-        <div><strong>4. Gewinner auslosen</strong><br/>Starte die Auslosung und feiere die Gewinner mit Konfetti und Screenshot.</div>
+      <div style="background:#fff; border-radius:16px; padding:1rem; width:200px; box-shadow:0 4px 12px rgba(0,0,0,0.05); text-align:center;">
+        <div style="font-size:2rem;">🎉</div>
+        <h3 style="margin:0.5rem 0;">Gewinner ziehen</h3>
+        <p style="font-size:0.95rem;">Zufall entscheidet – mit Konfetti</p>
       </div>
     </div>
   </div>
@@ -392,47 +366,6 @@
       <div class="kpi-card"><strong>Zahlungen</strong><br><span id="paymentsToday">6</span></div>
       <div class="kpi-card"><strong>Ziehungen</strong><br><span id="drawsToday">45</span></div>
     </div>
-
-    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
-      <button onclick="showAdminSection('users')">Nutzer</button>
-      <button onclick="showAdminSection('promos')">Promo-Codes</button>
-      <button onclick="showAdminSection('subscriptions')">Abos</button>
-      <button onclick="showAdminSection('draws')">Ziehungen</button>
-    </div>
-
-    <div id="adminSections" style="margin-top:1rem;">
-      <div class="admin-section" id="admin-users">
-        <h3>Nutzer</h3>
-        <table style="width:100%; border-collapse:collapse;">
-          <thead><tr><th>E-Mail</th><th>Plan</th><th>Tokens</th><th>Aktion</th></tr></thead>
-          <tbody>
-            <tr><td>user@demo.com</td><td>free</td><td>2</td><td><button>+1 Token</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="admin-section" id="admin-promos" style="display:none;">
-        <h3>Promo-Codes</h3>
-        <table style="width:100%; border-collapse:collapse;">
-          <thead><tr><th>Code</th><th>Tokens</th><th>Genutzt von</th></tr></thead>
-          <tbody>
-            <tr><td>INFLU2024</td><td>3</td><td>user@demo.com</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="admin-section" id="admin-subscriptions" style="display:none;">
-        <h3>Abos</h3>
-        <p>Pro 500: 10 Nutzer</p>
-        <p>Pro 1000: 7 Nutzer</p>
-        <p>Pro+: 3 Nutzer</p>
-      </div>
-      <div class="admin-section" id="admin-draws" style="display:none;">
-        <h3>Ziehungen</h3>
-        <ul style="list-style:none; padding:0;">
-          <li>15.05 – @sunlover – 140 Kommentare</li>
-          <li>14.05 – @moonbeam – 90 Kommentare</li>
-        </ul>
-      </div>
-    </div>
   </div>
 
   <script>
@@ -455,6 +388,11 @@
     function showScreen(id) {
       document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
+
+      // Infobox nur bei screen1 sichtbar
+      const infoBox = document.getElementById("infoblock");
+      if (infoBox) infoBox.style.display = id === "screen1" ? "block" : "none";
+
       window.scrollTo(0, 0);
     }
 
@@ -499,36 +437,22 @@
       }
     }
 
-    function openPremiumModal() {
-      document.getElementById("premiumModal").style.display = "block";
-    }
-
-    function closePremiumModal() {
-      document.getElementById("premiumModal").style.display = "none";
-    }
-
+    // DEMO-MODUS: Keine Limit-Prüfung
     function checkAccessBeforeDraw() {
-      const limit = commentLimits[userPlan];
-      if (simulatedCommentCount <= limit) return true;
-      if (userTokens > 0) {
-        userTokens--;
-        localStorage.setItem("tokens", userTokens);
-        updateDashboard();
-        return true;
-      }
-      openPremiumModal();
-      return false;
+      return true;
     }
 
     function startDraw() {
       if (!checkAccessBeforeDraw()) return;
       showScreen("screen4");
       document.getElementById("winnerAnimation").style.display = "none";
+
       const comments = [
         { user: "@sunlover" },
         { user: "@moonbeam" },
         { user: "@drawlyfan" }
       ];
+
       setTimeout(() => {
         const winner = comments[Math.floor(Math.random() * comments.length)];
         document.getElementById("congratsText").textContent = `🎉 Glückwunsch ${winner.user}!`;
@@ -593,35 +517,18 @@
       const email = document.getElementById("loginEmail").value;
       if (email.includes("@admin")) {
         localStorage.setItem("isAdmin", "true");
-        showAdminLink();
+        showScreen("adminpanel");
       } else {
         localStorage.setItem("isAdmin", "false");
+        showScreen("dashboard");
       }
-      closeLoginModal();
       updateDashboard();
-      showScreen("dashboard");
+      closeLoginModal();
     }
 
     function register() {
       alert("Registrierung abgeschlossen.");
       login();
-    }
-
-    function showAdminLink() {
-      const nav = document.getElementById("navMenu");
-      if (!document.getElementById("adminLink")) {
-        const a = document.createElement("a");
-        a.textContent = "Admin";
-        a.href = "#";
-        a.id = "adminLink";
-        a.onclick = () => { showScreen("adminpanel"); return false; };
-        nav.appendChild(a);
-      }
-    }
-
-    function showAdminSection(id) {
-      document.querySelectorAll(".admin-section").forEach(s => s.style.display = "none");
-      document.getElementById("admin-" + id).style.display = "block";
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -643,12 +550,6 @@
         updateDashboard();
         showScreen("dashboard");
         window.history.replaceState({}, document.title, window.location.pathname);
-      }
-
-      const browserLang = navigator.language.slice(0, 2);
-      const savedLang = localStorage.getItem("lang") || browserLang;
-      if (localStorage.getItem("isAdmin") === "true") {
-        showAdminLink();
       }
     });
   </script>
