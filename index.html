@@ -104,94 +104,199 @@
   </style>
 </head>
 <body>
-<!-- Hintergrundkreise -->
-<div class="circle circle1"></div>
-<div class="circle circle2"></div>
-<div class="circle circle3"></div>
-<!-- Screen 1: Link-Eingabe -->
-<div id="screen1" class="screen active">
-  <h2>Gewinnspiel starten</h2>
-  <input type="text" id="postLink" placeholder="Link zum Post eingeben" />
-  <button onclick="showScreen('screen2')">Weiter</button>
-</div>
+  <!-- Hintergrundkreise -->
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+  <div class="circle circle3"></div>
 
-<!-- Screen 2: Vorschau -->
-<div id="screen2" class="screen">
-  <h2>Vorschau</h2>
-  <p>Likes: 132 • Kommentare: 240</p>
-  <img src="https://via.placeholder.com/500x300.png?text=Vorschau" style="width:100%; border-radius:10px;" />
-  <button onclick="showScreen('screen3')">Kriterien festlegen</button>
-</div>
+  <!-- Header & Menü -->
+  <header style="display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem;">
+    <div onclick="showScreen('screen1')" style="cursor:pointer; font-family:'Playfair Display'; font-size:1.8rem; color:var(--text);">
+      Drawly
+    </div>
+    <div id="burger" onclick="toggleMenu()" style="cursor:pointer; font-size:1.5rem;">☰</div>
+  </header>
 
-<!-- Screen 3: Kriterien -->
-<div id="screen3" class="screen">
-  <h2>Kriterien</h2>
-  <label><input type="checkbox" id="requireHashtag"> Hashtag</label><br/>
-  <label><input type="checkbox" id="requireMention"> Freunde markieren</label><br/>
-  <label><input type="checkbox" id="requireFollow"> Muss folgen</label><br/>
-  <label>Anzahl Gewinner:</label><br/>
-  <input type="number" id="winnerCount" value="1" min="1" max="10"><br/>
-  <button onclick="startDraw()">Auslosung starten</button>
-</div>
+  <nav id="navMenu" style="display:none; flex-direction:column; align-items:center; gap:1rem; background:var(--accent); padding:1rem;">
+    <a href="#" onclick="showScreen('screen1')">Start</a>
+    <a href="#" onclick="showScreen('dashboard')">Dashboard</a>
+    <a href="#" onclick="showScreen('pricing')">Preise</a>
+    <a href="#" onclick="showScreen('impressum')">Impressum</a>
+    <a href="#" onclick="openLoginModal()">Login</a>
+  </nav>
 
-<!-- Screen 4: Gewinner -->
-<div id="screen4" class="screen">
-  <h2>Gewinner</h2>
-  <div id="winnerAnimation" style="display:none;">
-    <img src="https://i.pravatar.cc/100?u=winner" alt="Gewinner" style="border-radius:50%; margin-bottom:1rem;" />
-    <h3 id="congratsText">Herzlichen Glückwunsch!</h3>
-    <button onclick="takeScreenshot()">Screenshot speichern</button>
+  <!-- Sprachwahl -->
+  <div id="languageBar" style="display:flex; justify-content:center; gap:0.5rem; margin-bottom:1rem;">
+    <span onclick="setLanguage('de')">🇩🇪</span>
+    <span onclick="setLanguage('en')">🇬🇧</span>
+    <span onclick="setLanguage('es')">🇪🇸</span>
+    <span onclick="setLanguage('fr')">🇫🇷</span>
+    <span onclick="setLanguage('it')">🇮🇹</span>
+    <span onclick="setLanguage('tr')">🇹🇷</span>
+    <span onclick="setLanguage('ru')">🇷🇺</span>
+    <span onclick="setLanguage('zh')">🇨🇳</span>
   </div>
-</div>
+    <!-- Screen 1: Linkeingabe -->
+  <div id="screen1" class="screen active">
+    <h2>Gewinnspiel starten</h2>
+    <input type="text" id="postLink" placeholder="Link zum Post eingeben" />
+    <button onclick="showScreen('screen2')">Weiter</button>
+  </div>
 
-<!-- Dashboard -->
-<div id="dashboard" class="screen">
-  <h2>Dein Bereich</h2>
-  <p><strong>Plan:</strong> <span id="subscriptionStatus">free</span></p>
-  <p><strong>Tokens:</strong> <span id="userTokenCount">0</span></p>
-  <p><strong>Email:</strong> <span id="userEmail">user@example.com</span></p>
-  <input type="text" id="promoInput" placeholder="Promo-Code eingeben" />
-  <button onclick="applyPromoCode(document.getElementById('promoInput').value)">Einlösen</button>
-  <p><a href="#" onclick="logout()">Logout</a></p>
-</div>
+  <!-- Screen 2: Vorschau -->
+  <div id="screen2" class="screen">
+    <h2>Vorschau</h2>
+    <p>Likes: 132 • Kommentare: 240</p>
+    <img src="https://via.placeholder.com/500x300.png?text=Vorschau" style="width:100%; border-radius:10px;" />
+    <button onclick="showScreen('screen3')">Kriterien festlegen</button>
+  </div>
 
-<!-- Premium-Zugangsmodal -->
-<div id="premiumModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1001;">
-  <h3>Premium-Zugriff erforderlich</h3>
-  <p>Mehr als 100 Kommentare. Wähle eine Option:</p>
-  <button onclick="startOneTimeCheckout('one299')">2,99 € (bis 500)</button><br/>
-  <button onclick="startOneTimeCheckout('one499')">4,99 € (bis 1000)</button><br/>
-  <button onclick="startOneTimeCheckout('one699')">6,99 € (über 1000)</button><br/>
-  <button onclick="showScreen('pricing')">Abo abschließen</button><br/><br/>
-  <button onclick="closePremiumModal()">Abbrechen</button>
-</div>
+  <!-- Screen 3: Kriterien -->
+  <div id="screen3" class="screen">
+    <h2>Kriterien</h2>
+    <label><input type="checkbox" id="requireHashtag"> Hashtag</label><br/>
+    <label><input type="checkbox" id="requireMention"> Freunde markieren</label><br/>
+    <label><input type="checkbox" id="requireFollow"> Muss folgen</label><br/>
+    <label>Anzahl Gewinner:</label><br/>
+    <input type="number" id="winnerCount" value="1" min="1" max="10"><br/>
+    <button onclick="startDraw()">Auslosung starten</button>
+  </div>
 
-<!-- Pricing -->
-<div id="pricing" class="screen">
-  <h2>Preise</h2>
-  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:1rem;">
-    <div class="kpi-card">
-      <h3>Pro 500</h3>
-      <p><strong>8,99 €/Monat</strong></p>
-      <p>bis 500 Kommentare</p>
-      <button onclick="startStripeCheckout('pro500')">Jetzt abonnieren</button>
-    </div>
-    <div class="kpi-card">
-      <h3>Pro 1000</h3>
-      <p><strong>13,99 €/Monat</strong></p>
-      <p>bis 1000 Kommentare</p>
-      <button onclick="startStripeCheckout('pro1000')">Jetzt abonnieren</button>
-    </div>
-    <div class="kpi-card">
-      <h3>Pro+</h3>
-      <p><strong>18,99 €/Monat</strong></p>
-      <p>bis 10.000 Kommentare</p>
-      <button onclick="startStripeCheckout('proplus')">Jetzt abonnieren</button>
+  <!-- Screen 4: Gewinner -->
+  <div id="screen4" class="screen">
+    <h2>Gewinner</h2>
+    <div id="winnerAnimation" style="display:none;">
+      <img src="https://i.pravatar.cc/100?u=winner" alt="Gewinner" style="border-radius:50%; margin-bottom:1rem;" />
+      <h3 id="congratsText">Herzlichen Glückwunsch!</h3>
+      <button onclick="takeScreenshot()">Screenshot speichern</button>
     </div>
   </div>
-</div>
-<script>
-  // Stripe Public Key einsetzen
+
+  <!-- Premium-Modal -->
+  <div id="premiumModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1001;">
+    <h3>Premium-Zugriff erforderlich</h3>
+    <p>Mehr als 100 Kommentare. Wähle eine Option:</p>
+    <button onclick="startOneTimeCheckout('one299')">2,99 € (bis 500)</button><br/>
+    <button onclick="startOneTimeCheckout('one499')">4,99 € (bis 1000)</button><br/>
+    <button onclick="startOneTimeCheckout('one699')">6,99 € (über 1000)</button><br/>
+    <button onclick="showScreen('pricing')">Abo abschließen</button><br/><br/>
+    <button onclick="closePremiumModal()">Abbrechen</button>
+  </div>
+
+  <!-- Impressum -->
+  <div id="impressum" class="screen">
+    <h2>Impressum</h2>
+    <p>Drawly GmbH<br/>Boho Straße 1<br/>10101 Berlin</p>
+  </div>
+    <!-- Dashboard -->
+  <div id="dashboard" class="screen">
+    <h2>Dein Bereich</h2>
+    <p><strong>Plan:</strong> <span id="subscriptionStatus">free</span></p>
+    <p><strong>Tokens:</strong> <span id="userTokenCount">0</span></p>
+    <p><strong>Email:</strong> <span id="userEmail">user@example.com</span></p>
+    <input type="text" id="promoInput" placeholder="Promo-Code eingeben" />
+    <button onclick="applyPromoCode(document.getElementById('promoInput').value)">Einlösen</button>
+    <p><a href="#" onclick="logout()">Logout</a></p>
+  </div>
+
+  <!-- Login-Modal -->
+  <div id="loginModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1001;">
+    <h3>Login</h3>
+    <input type="email" id="loginEmail" placeholder="E-Mail" /><br/>
+    <input type="password" id="loginPassword" placeholder="Passwort" /><br/><br/>
+    <button onclick="login()">Einloggen</button>
+    <button onclick="register()">Registrieren</button><br/><br/>
+    <button onclick="closeLoginModal()">Abbrechen</button>
+  </div>
+
+  <!-- Pricing -->
+  <div id="pricing" class="screen">
+    <h2>Preise</h2>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:1rem;">
+      <div class="kpi-card">
+        <h3>Pro 500</h3>
+        <p><strong>8,99 €/Monat</strong></p>
+        <p>bis 500 Kommentare</p>
+        <button onclick="startStripeCheckout('pro500')">Jetzt abonnieren</button>
+      </div>
+      <div class="kpi-card">
+        <h3>Pro 1000</h3>
+        <p><strong>13,99 €/Monat</strong></p>
+        <p>bis 1000 Kommentare</p>
+        <button onclick="startStripeCheckout('pro1000')">Jetzt abonnieren</button>
+      </div>
+      <div class="kpi-card">
+        <h3>Pro+</h3>
+        <p><strong>18,99 €/Monat</strong></p>
+        <p>bis 10.000 Kommentare</p>
+        <button onclick="startStripeCheckout('proplus')">Jetzt abonnieren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adminpanel -->
+  <div id="adminpanel" class="screen">
+    <h2>Admin-Dashboard</h2>
+
+    <!-- KPI-Karten -->
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:2rem;">
+      <div class="kpi-card"><strong>Besucher heute</strong><br><span id="visitsToday">123</span></div>
+      <div class="kpi-card"><strong>Registrierungen</strong><br><span id="signupsToday">12</span></div>
+      <div class="kpi-card"><strong>Zahlungen</strong><br><span id="paymentsToday">6</span></div>
+      <div class="kpi-card"><strong>Ziehungen</strong><br><span id="drawsToday">45</span></div>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
+      <button onclick="showAdminSection('users')">Nutzer</button>
+      <button onclick="showAdminSection('promos')">Promo-Codes</button>
+      <button onclick="showAdminSection('subscriptions')">Abos</button>
+      <button onclick="showAdminSection('draws')">Ziehungen</button>
+    </div>
+
+    <!-- Inhalte -->
+    <div id="adminSections" style="margin-top:1rem;">
+      <!-- Nutzer -->
+      <div class="admin-section" id="admin-users">
+        <h3>Nutzer</h3>
+        <table style="width:100%; border-collapse:collapse;">
+          <thead><tr><th>E-Mail</th><th>Plan</th><th>Tokens</th><th>Aktion</th></tr></thead>
+          <tbody>
+            <tr><td>user@demo.com</td><td>free</td><td>2</td><td><button>+1 Token</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Promo-Codes -->
+      <div class="admin-section" id="admin-promos" style="display:none;">
+        <h3>Promo-Codes</h3>
+        <table style="width:100%; border-collapse:collapse;">
+          <thead><tr><th>Code</th><th>Tokens</th><th>Genutzt von</th></tr></thead>
+          <tbody>
+            <tr><td>INFLU2024</td><td>3</td><td>user@demo.com</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Abos -->
+      <div class="admin-section" id="admin-subscriptions" style="display:none;">
+        <h3>Abos</h3>
+        <p>Pro 500: 10 Nutzer</p>
+        <p>Pro 1000: 7 Nutzer</p>
+        <p>Pro+: 3 Nutzer</p>
+      </div>
+
+      <!-- Ziehungen -->
+      <div class="admin-section" id="admin-draws" style="display:none;">
+        <h3>Ziehungen</h3>
+        <ul style="list-style:none; padding:0;">
+          <li>15.05 – @sunlover – 140 Kommentare</li>
+          <li>14.05 – @moonbeam – 90 Kommentare</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
   const stripe = Stripe("pk_test_YOUR_PUBLIC_KEY");
 
   const stripePriceIds = {
@@ -203,7 +308,6 @@
     one699: 'price_test_one_699'
   };
 
-  // Statusvariablen
   let userPlan = localStorage.getItem("plan") || "free";
   let userTokens = parseInt(localStorage.getItem("tokens") || "0", 10);
   const commentLimits = { free: 100, pro500: 500, pro1000: 1000, proplus: 10000 };
@@ -224,6 +328,7 @@
   function logout() {
     localStorage.removeItem("plan");
     localStorage.removeItem("tokens");
+    localStorage.removeItem("isAdmin");
     userPlan = "free";
     userTokens = 0;
     updateDashboard();
@@ -252,36 +357,55 @@
   function checkAccessBeforeDraw() {
     const limit = commentLimits[userPlan];
     if (simulatedCommentCount <= limit) return true;
-
     if (userTokens > 0) {
       userTokens--;
       localStorage.setItem("tokens", userTokens);
       updateDashboard();
       return true;
     }
-
     openPremiumModal();
     return false;
   }
 
   function startDraw() {
     if (!checkAccessBeforeDraw()) return;
-
     showScreen("screen4");
     document.getElementById("winnerAnimation").style.display = "none";
-
     const comments = [
       { user: "@sunlover" },
       { user: "@moonbeam" },
       { user: "@drawlyfan" }
     ];
-
     setTimeout(() => {
       const winner = comments[Math.floor(Math.random() * comments.length)];
       document.getElementById("congratsText").textContent = `🎉 Glückwunsch ${winner.user}!`;
       document.getElementById("winnerAnimation").style.display = "block";
       launchConfetti();
     }, 2000);
+  }
+
+  function takeScreenshot() {
+    html2canvas(document.getElementById("screen4")).then(canvas => {
+      const link = document.createElement("a");
+      link.download = "drawly-gewinner.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
+
+  function launchConfetti() {
+    const emojis = ["✨", "🌸", "🧡", "🌞"];
+    for (let i = 0; i < 40; i++) {
+      const el = document.createElement("div");
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.position = "absolute";
+      el.style.top = "-10px";
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.fontSize = "24px";
+      el.style.animation = `fall ${2 + Math.random()}s ease-out forwards`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
   }
 
   function startStripeCheckout(plan) {
@@ -304,28 +428,77 @@
     });
   }
 
-  function launchConfetti() {
-    const emojis = ["✨", "🌸", "🧡", "🌞"];
-    for (let i = 0; i < 40; i++) {
-      const el = document.createElement("div");
-      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      el.style.position = "absolute";
-      el.style.top = "-10px";
-      el.style.left = Math.random() * 100 + "vw";
-      el.style.fontSize = "24px";
-      el.style.animation = `fall ${2 + Math.random()}s ease-out forwards`;
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 4000);
+  function toggleMenu() {
+    const nav = document.getElementById("navMenu");
+    nav.style.display = nav.style.display === "flex" ? "none" : "flex";
+  }
+
+  function openLoginModal() {
+    document.getElementById("loginModal").style.display = "block";
+  }
+
+  function closeLoginModal() {
+    document.getElementById("loginModal").style.display = "none";
+  }
+
+  function login() {
+    const email = document.getElementById("loginEmail").value;
+    if (email.includes("@admin")) {
+      localStorage.setItem("isAdmin", "true");
+      showAdminLink();
+    } else {
+      localStorage.setItem("isAdmin", "false");
+    }
+    closeLoginModal();
+    updateDashboard();
+    showScreen("dashboard");
+  }
+
+  function register() {
+    alert("Registrierung abgeschlossen.");
+    login();
+  }
+
+  function showAdminLink() {
+    const nav = document.getElementById("navMenu");
+    if (!document.getElementById("adminLink")) {
+      const a = document.createElement("a");
+      a.textContent = "Admin";
+      a.href = "#";
+      a.id = "adminLink";
+      a.onclick = () => { showScreen("adminpanel"); return false; };
+      nav.appendChild(a);
     }
   }
 
-  function takeScreenshot() {
-    html2canvas(document.getElementById("screen4")).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "drawly-gewinner.png";
-      link.href = canvas.toDataURL();
-      link.click();
-    });
+  function showAdminSection(id) {
+    document.querySelectorAll(".admin-section").forEach(s => s.style.display = "none");
+    document.getElementById("admin-" + id).style.display = "block";
+  }
+
+  const translations = {
+    de: { welcome: "Gewinnspiel starten", criteria: "Kriterien", winner: "Gewinner", dashboard: "Dein Bereich", prices: "Preise" },
+    en: { welcome: "Start your giveaway", criteria: "Criteria", winner: "Winner", dashboard: "Your Dashboard", prices: "Pricing" },
+    es: { welcome: "Inicia tu sorteo", criteria: "Criterios", winner: "Ganador", dashboard: "Tu panel", prices: "Precios" },
+    fr: { welcome: "Lancer votre concours", criteria: "Critères", winner: "Gagnant", dashboard: "Votre espace", prices: "Tarifs" },
+    it: { welcome: "Avvia il concorso", criteria: "Criteri", winner: "Vincitore", dashboard: "Dashboard", prices: "Prezzi" },
+    tr: { welcome: "Çekilişi başlat", criteria: "Kriterler", winner: "Kazanan", dashboard: "Paneliniz", prices: "Fiyatlar" },
+    ru: { welcome: "Начать розыгрыш", criteria: "Критерии", winner: "Победитель", dashboard: "Панель", prices: "Цены" },
+    zh: { welcome: "开始抽奖", criteria: "标准", winner: "获胜者", dashboard: "仪表盘", prices: "价格" }
+  };
+
+  function setLanguage(lang) {
+    localStorage.setItem("lang", lang);
+    applyTranslations(lang);
+  }
+
+  function applyTranslations(lang) {
+    const t = translations[lang] || translations["de"];
+    document.querySelector("#screen1 h2").textContent = t.welcome;
+    document.querySelector("#screen3 h2").textContent = t.criteria;
+    document.querySelector("#screen4 h2").textContent = t.winner;
+    document.querySelector("#dashboard h2").textContent = t.dashboard;
+    document.querySelector("#pricing h2").textContent = t.prices;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -349,6 +522,14 @@
       updateDashboard();
       showScreen("dashboard");
       window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const browserLang = navigator.language.slice(0, 2);
+    const savedLang = localStorage.getItem("lang") || browserLang;
+    applyTranslations(savedLang);
+
+    if (localStorage.getItem("isAdmin") === "true") {
+      showAdminLink();
     }
   });
 </script>
