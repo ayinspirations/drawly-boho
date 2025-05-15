@@ -249,20 +249,20 @@
     <!-- Podest-Ansicht -->
     <div id="winnersList" style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:2rem;"></div>
 
-    <!-- Ziehungsprotokoll-Button -->
-    <div id="protocolArea" style="display:none; margin-top:2rem;">
-      <button onclick="downloadDrawProtocol()">Ziehungsprotokoll herunterladen</button>
-    </div>
+ <!-- Screenshot-Button -->
+<div id="screenshotBox" style="display:none; margin-top:1rem;">
+  <button onclick="takeScreenshot()">Screenshot speichern</button>
+</div>
 
-    <!-- CSV-Export-Button -->
-    <div id="exportArea" style="display:none; margin-top:1rem;">
-      <button onclick="exportCommentsToCSV()">Teilnehmerliste als CSV exportieren</button>
-    </div>
+<!-- Ziehungsprotokoll-Button -->
+<div id="protocolArea" style="display:none; margin-top:1rem;">
+  <button onclick="downloadDrawProtocol()">Ziehungsprotokoll herunterladen</button>
+</div>
 
-    <!-- Screenshot-Button -->
-    <div id="screenshotBox" style="display:none; margin-top:1rem;">
-      <button onclick="takeScreenshot()">Screenshot speichern</button>
-    </div>
+<!-- CSV-Export-Button -->
+<div id="exportArea" style="display:none; margin-top:1rem;">
+  <button onclick="exportCommentsToCSV()">Teilnehmerliste als CSV exportieren</button>
+</div>
   </div>
     <!-- Preise -->
   <div id="pricing" class="screen">
@@ -416,49 +416,56 @@
     }
 
     // Gewinner anzeigen
-    function showWinners(winners) {
-      const container = document.getElementById('winnersList');
-      container.innerHTML = '';
-      winners.forEach((winner, index) => {
-        const div = document.createElement('div');
-        div.style.display = 'flex';
-        div.style.flexDirection = 'column';
-        div.style.alignItems = 'center';
-        div.style.justifyContent = 'flex-end';
-        div.style.width = '100px';
-        div.style.height = `${100 + (3 - index) * 20}px`;
-        div.style.background = '#e8dcd1';
-        div.style.borderRadius = '10px 10px 0 0';
-        div.style.margin = '0 5px';
-        div.style.padding = '10px';
-        div.style.animation = `fadeIn 0.5s ease ${index}s forwards`;
-        div.style.opacity = 0;
+function showWinners(winners) {
+  const container = document.getElementById("winnersList");
+  container.innerHTML = '';
 
-        const img = document.createElement('img');
-        img.src = winner.profilePic;
-        img.alt = winner.user;
-        img.style.width = '60px';
-        img.style.height = '60px';
-        img.style.borderRadius = '50%';
-        img.style.border = '3px solid #c8a989';
-        img.style.marginBottom = '10px';
+  winners.forEach((winner, index) => {
+    const div = document.createElement("div");
+    div.style.display = 'flex';
+    div.style.flexDirection = 'column';
+    div.style.alignItems = 'center';
+    div.style.justifyContent = 'flex-end';
+    div.style.width = '100px';
+    div.style.height = `${100 + (3 - index) * 20}px`;
+    div.style.background = '#e8dcd1';
+    div.style.borderRadius = '10px 10px 0 0';
+    div.style.margin = '0 5px';
+    div.style.padding = '10px';
+    div.style.transition = 'opacity 0.6s ease';
+    div.style.opacity = 0;
 
-        const name = document.createElement('div');
-        name.textContent = winner.user;
-        name.style.fontWeight = 'bold';
+    const img = document.createElement("img");
+    img.src = winner.profilePic;
+    img.alt = winner.user;
+    img.style.width = '60px';
+    img.style.height = '60px';
+    img.style.borderRadius = '50%';
+    img.style.border = '3px solid #c8a989';
+    img.style.marginBottom = '10px';
 
-        const place = document.createElement('div');
-        place.textContent = `${index + 1}. Platz`;
-        place.style.fontSize = '0.9rem';
-        place.style.color = '#5b3e31';
+    const name = document.createElement("div");
+    name.textContent = winner.user;
+    name.style.fontWeight = 'bold';
 
-        div.appendChild(img);
-        div.appendChild(name);
-        div.appendChild(place);
-        container.appendChild(div);
-      });
-    }
+    const place = document.createElement("div");
+    place.textContent = `${index + 1}. Platz`;
+    place.style.fontSize = '0.9rem';
+    place.style.color = '#5b3e31';
 
+    div.appendChild(img);
+    div.appendChild(name);
+    div.appendChild(place);
+
+    container.appendChild(div);
+
+    // Sichtbarkeit mit Verzögerung einblenden
+    setTimeout(() => {
+      div.style.opacity = 1;
+    }, 1000 * index);
+  });
+}
+      
     // Konfetti
     function launchConfetti() {
       const emojis = ['🎉', '✨', '🎊', '💫', '🌟'];
