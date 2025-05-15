@@ -74,58 +74,18 @@
       background: var(--button-hover);
     }
 
-    .circle {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.15;
-      animation: moveCircle 30s linear infinite;
-      z-index: 0;
-    }
-
-    @keyframes moveCircle {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(100vh) rotate(360deg); }
-    }
-
-    .circle1 { width: 100px; height: 100px; background: #ddd1c2; top: -100px; left: 5%; animation-delay: 0s; }
-    .circle2 { width: 160px; height: 160px; background: #eae4dc; top: -150px; left: 50%; animation-delay: 10s; }
-    .circle3 { width: 80px; height: 80px; background: #f0eae2; top: -80px; left: 80%; animation-delay: 5s; }
-
-    #burger {
-      width: 40px;
-      height: 30px;
+    .criteria-card {
+      background: #fffaf6;
+      border: 1px solid #e6dcd5;
+      border-radius: 16px;
+      padding: 1rem;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      font-size: 1rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-      padding: 5px;
-      border-radius: 10px;
-      transition: background 0.3s ease;
-      z-index: 1002;
-    }
-
-    #burger:hover {
-      background: var(--accent);
-    }
-
-    .bar {
-      height: 4px;
-      background-color: var(--text);
-      border-radius: 2px;
-      transition: all 0.3s ease;
-      transform-origin: center;
-    }
-
-    #burger.open .bar:nth-child(1) {
-      transform: rotate(45deg) translate(6px, 6px);
-    }
-
-    #burger.open .bar:nth-child(2) {
-      opacity: 0;
-    }
-
-    #burger.open .bar:nth-child(3) {
-      transform: rotate(-45deg) translate(6px, -6px);
+      align-items: center;
     }
 
     nav#navMenu {
@@ -153,24 +113,9 @@
     nav#navMenu a:hover {
       color: var(--button-hover);
     }
-
-    @keyframes slideFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="circle circle1"></div>
-  <div class="circle circle2"></div>
-  <div class="circle circle3"></div>
-
   <header style="display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem;">
     <div onclick="showScreen('screen1')" style="cursor:pointer; font-family:'Playfair Display'; font-size:1.8rem; color:var(--text);">
       Drawly
@@ -233,38 +178,43 @@
 
   <!-- Screen 3: Kriterien -->
   <div id="screen3" class="screen">
-    <h2>Kriterien auswählen</h2>
-    <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center; margin-top: 1rem;">
+    <h2>Kriterien festlegen</h2>
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center;">
 
+      <!-- Hashtag -->
       <div class="criteria-card">
-        <label>
-          <input type="checkbox" id="requireHashtag" />
-          <span>Beitrag muss bestimmten <strong>Hashtag</strong> enthalten (z. B. #drawlygiveaway)</span>
-        </label>
+        <h3 style="margin-bottom: 0.5rem;"># Hashtag</h3>
+        <p style="margin: 0 0 0.5rem;">Teilnehmer:innen müssen diesen Hashtag verwenden:</p>
+        <input type="text" id="hashtagInput" placeholder="#drawly" style="text-align:center;" />
       </div>
 
+      <!-- Freunde markieren -->
       <div class="criteria-card">
-        <label>
-          <input type="checkbox" id="requireMention" />
-          <span>Teilnehmer müssen mindestens <strong>eine Person markieren</strong></span>
-        </label>
+        <h3 style="margin-bottom: 0.5rem;">👥 Freunde markieren</h3>
+        <p style="margin: 0 0 0.5rem;">Wie viele Personen sollen mindestens markiert werden?</p>
+        <input type="number" id="mentionCount" min="1" max="10" value="1" />
       </div>
 
+      <!-- Folgen -->
       <div class="criteria-card">
-        <label>
-          <input type="checkbox" id="requireFollow" />
-          <span>Teilnehmer müssen folgenden Accounts folgen:</span>
-        </label>
-        <input type="text" id="followAccount1" placeholder="@deinAccount" />
-        <input type="text" id="followAccount2" placeholder="@zweiterAccount (optional)" />
-        <input type="text" id="followAccount3" placeholder="@dritterAccount (optional)" />
+        <h3 style="margin-bottom: 0.5rem;">✅ Folgen</h3>
+        <p style="margin: 0 0 0.5rem;">Folgende Accounts müssen gefolgt werden:</p>
+        <input type="text" id="follow1" placeholder="@drawly" />
+        <input type="text" id="follow2" placeholder="@zweiterAccount (optional)" />
+        <input type="text" id="follow3" placeholder="@dritterAccount (optional)" />
       </div>
 
+      <!-- Like erforderlich -->
+      <div class="criteria-card" style="flex-direction: row; align-items: center; justify-content: center;">
+        <input type="checkbox" id="requireLike" style="margin-right: 10px;" />
+        <label for="requireLike">Beitrag muss geliked sein</label>
+      </div>
+
+      <!-- Anzahl Gewinner -->
       <div class="criteria-card">
-        <label>
-          <span><strong>Anzahl der Gewinner:</strong></span><br/>
-          <input type="number" id="winnerCount" value="1" min="1" max="10" />
-        </label>
+        <h3 style="margin-bottom: 0.5rem;">🎁 Gewinner:innen</h3>
+        <p style="margin: 0 0 0.5rem;">Wie viele Personen sollen ausgelost werden?</p>
+        <input type="number" id="winnerCount" min="1" max="10" value="1" />
       </div>
 
       <button onclick="startDraw()">Auslosung starten</button>
@@ -357,39 +307,11 @@
       </div>
     </div>
   </div>
-    <!-- Adminpanel -->
-  <div id="adminpanel" class="screen">
-    <h2>Admin-Dashboard</h2>
-    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:2rem;">
-      <div class="kpi-card"><strong>Besucher heute</strong><br><span id="visitsToday">123</span></div>
-      <div class="kpi-card"><strong>Registrierungen</strong><br><span id="signupsToday">12</span></div>
-      <div class="kpi-card"><strong>Zahlungen</strong><br><span id="paymentsToday">6</span></div>
-      <div class="kpi-card"><strong>Ziehungen</strong><br><span id="drawsToday">45</span></div>
-    </div>
-  </div>
-
-  <script>
-    const stripe = Stripe("pk_test_YOUR_PUBLIC_KEY");
-
-    const stripePriceIds = {
-      pro500: 'price_test_8_99',
-      pro1000: 'price_test_13_99',
-      proplus: 'price_test_18_99',
-      one299: 'price_test_one_299',
-      one499: 'price_test_one_499',
-      one699: 'price_test_one_699'
-    };
-
-    let userPlan = localStorage.getItem("plan") || "free";
-    let userTokens = parseInt(localStorage.getItem("tokens") || "0", 10);
-    const commentLimits = { free: 100, pro500: 500, pro1000: 1000, proplus: 10000 };
-    let simulatedCommentCount = 240;
-
+    <script>
     function showScreen(id) {
       document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
 
-      // Infobox nur bei screen1 sichtbar
       const infoBox = document.getElementById("infoblock");
       if (infoBox) infoBox.style.display = id === "screen1" ? "block" : "none";
 
@@ -398,67 +320,40 @@
 
     function toggleMenu() {
       const nav = document.getElementById("navMenu");
-      const burger = document.getElementById("burger");
-      if (nav.style.display === "flex") {
-        nav.style.animation = "none";
-        nav.style.display = "none";
-        burger.classList.remove("open");
-      } else {
-        nav.style.display = "flex";
-        nav.style.animation = "slideFadeIn 0.4s ease forwards";
-        burger.classList.add("open");
-      }
-    }
-
-    function updateDashboard() {
-      document.getElementById("subscriptionStatus").textContent = userPlan;
-      document.getElementById("userTokenCount").textContent = userTokens;
-      document.getElementById("userEmail").textContent = "user@example.com";
+      nav.style.display = nav.style.display === "flex" ? "none" : "flex";
     }
 
     function logout() {
-      localStorage.removeItem("plan");
-      localStorage.removeItem("tokens");
-      localStorage.removeItem("isAdmin");
-      userPlan = "free";
-      userTokens = 0;
-      updateDashboard();
+      localStorage.clear();
       showScreen("screen1");
     }
 
     function applyPromoCode(code) {
       if (code === "INFLU2024") {
-        userTokens += 3;
-        localStorage.setItem("tokens", userTokens);
-        alert("Promo-Code eingelöst: 3 Token gutgeschrieben.");
-        updateDashboard();
+        alert("Promo-Code eingelöst!");
       } else {
         alert("Ungültiger Promo-Code.");
       }
     }
 
-    // DEMO-MODUS: Keine Limit-Prüfung
-    function checkAccessBeforeDraw() {
-      return true;
+    function closeLoginModal() {
+      document.getElementById("loginModal").style.display = "none";
     }
 
-    function startDraw() {
-      if (!checkAccessBeforeDraw()) return;
-      showScreen("screen4");
-      document.getElementById("winnerAnimation").style.display = "none";
+    function openLoginModal() {
+      document.getElementById("loginModal").style.display = "block";
+    }
 
-      const comments = [
-        { user: "@sunlover" },
-        { user: "@moonbeam" },
-        { user: "@drawlyfan" }
-      ];
+    function login() {
+      const email = document.getElementById("loginEmail").value;
+      if (email.includes("@admin")) showScreen("adminpanel");
+      else showScreen("dashboard");
+      closeLoginModal();
+    }
 
-      setTimeout(() => {
-        const winner = comments[Math.floor(Math.random() * comments.length)];
-        document.getElementById("congratsText").textContent = `🎉 Glückwunsch ${winner.user}!`;
-        document.getElementById("winnerAnimation").style.display = "block";
-        launchConfetti();
-      }, 2000);
+    function register() {
+      alert("Registrierung abgeschlossen.");
+      login();
     }
 
     function takeScreenshot() {
@@ -485,72 +380,50 @@
       }
     }
 
-    function startStripeCheckout(plan) {
-      const priceId = stripePriceIds[plan];
-      stripe.redirectToCheckout({
-        lineItems: [{ price: priceId, quantity: 1 }],
-        mode: 'subscription',
-        successUrl: window.location.origin + `?checkout=success&type=${plan}`,
-        cancelUrl: window.location.origin + '?checkout=cancel'
-      });
+    // Demo-Modus: keine Prüfungen
+    function checkAccessBeforeDraw() {
+      return true;
     }
 
-    function startOneTimeCheckout(type) {
-      const priceId = stripePriceIds[type];
-      stripe.redirectToCheckout({
-        lineItems: [{ price: priceId, quantity: 1 }],
-        mode: 'payment',
-        successUrl: window.location.origin + `?checkout=success&type=${type}`,
-        cancelUrl: window.location.origin + '?checkout=cancel'
-      });
-    }
+    function startDraw() {
+      if (!checkAccessBeforeDraw()) return;
 
-    function openLoginModal() {
-      document.getElementById("loginModal").style.display = "block";
-    }
+      const hashtag = document.getElementById("hashtagInput").value.trim();
+      const mentionCount = parseInt(document.getElementById("mentionCount").value || "0", 10);
+      const followAccounts = [
+        document.getElementById("follow1").value.trim(),
+        document.getElementById("follow2").value.trim(),
+        document.getElementById("follow3").value.trim()
+      ].filter(Boolean);
+      const requireLike = document.getElementById("requireLike").checked;
+      const winnerCount = parseInt(document.getElementById("winnerCount").value || "1", 10);
 
-    function closeLoginModal() {
-      document.getElementById("loginModal").style.display = "none";
-    }
+      console.log("Kriterien:");
+      console.log("Hashtag:", hashtag);
+      console.log("Mind. markierte Personen:", mentionCount);
+      console.log("Follow-Accounts:", followAccounts);
+      console.log("Like erforderlich:", requireLike);
+      console.log("Gewinnerzahl:", winnerCount);
 
-    function login() {
-      const email = document.getElementById("loginEmail").value;
-      if (email.includes("@admin")) {
-        localStorage.setItem("isAdmin", "true");
-        showScreen("adminpanel");
-      } else {
-        localStorage.setItem("isAdmin", "false");
-        showScreen("dashboard");
-      }
-      updateDashboard();
-      closeLoginModal();
-    }
+      showScreen("screen4");
+      document.getElementById("winnerAnimation").style.display = "none";
 
-    function register() {
-      alert("Registrierung abgeschlossen.");
-      login();
+      const comments = [
+        { user: "@sunlover" },
+        { user: "@moonbeam" },
+        { user: "@drawlyfan" }
+      ];
+
+      setTimeout(() => {
+        const winner = comments[Math.floor(Math.random() * comments.length)];
+        document.getElementById("congratsText").textContent = `🎉 Glückwunsch ${winner.user}!`;
+        document.getElementById("winnerAnimation").style.display = "block";
+        launchConfetti();
+      }, 2000);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      updateDashboard();
-      const urlParams = new URLSearchParams(window.location.search);
-      const isSuccess = urlParams.get("checkout") === "success";
-      const type = urlParams.get("type");
-      if (isSuccess && type) {
-        if (type.startsWith("pro")) {
-          userPlan = type;
-          localStorage.setItem("plan", userPlan);
-          alert("Abo aktiviert: " + type);
-        } else if (type.startsWith("one")) {
-          const tokens = type === "one299" ? 1 : type === "one499" ? 2 : 3;
-          userTokens += tokens;
-          localStorage.setItem("tokens", userTokens);
-          alert(`${tokens} Token nach Einmalzahlung gutgeschrieben.`);
-        }
-        updateDashboard();
-        showScreen("dashboard");
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
+      showScreen("screen1");
     });
   </script>
 </body>
