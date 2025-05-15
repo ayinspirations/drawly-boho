@@ -3,96 +3,354 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drawly – Social Media Gewinnspiel</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- Google Fonts für Boho-Stil -->
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Open+Sans&display=swap" rel="stylesheet">
+  <title>Drawly – Social Giveaway Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet" />
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --bg: #f5f0e6;
+      --accent: #e8dcd1;
+      --text: #5b3e31;
+      --button: #c8a989;
+      --button-hover: #b88e70;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .screen {
+      display: none;
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+      padding: 2rem;
+      animation: fadeIn 0.4s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    input, button {
+      padding: 12px;
+      border-radius: 50px;
+      border: 1px solid #ccc;
+      margin: 10px 5px;
+      width: 80%;
+      max-width: 400px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--button);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background: var(--button-hover);
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: moveCircle 30s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes moveCircle {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    .circle1 { width: 100px; height: 100px; background: #ddd1c2; top: -100px; left: 5%; animation-delay: 0s; }
+    .circle2 { width: 160px; height: 160px; background: #eae4dc; top: -150px; left: 50%; animation-delay: 10s; }
+    .circle3 { width: 80px; height: 80px; background: #f0eae2; top: -80px; left: 80%; animation-delay: 5s; }
+
+    .kpi-card {
+      background: #fffaf6;
+      border: 1px solid #e6dcd5;
+      border-radius: 16px;
+      padding: 1rem;
+      width: 250px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      text-align: center;
+      font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <div id="page">
-    <header>
-      <img src="images/logo.png" alt="Drawly Logo" id="logo" />
-      <nav>
-        <ul>
-          <li><a href="#login">Login</a></li>
-          <li><a href="#modules">Module</a></li>
-          <li><a href="#pricing">Preise</a></li>
-          <li><a href="#impressum">Impressum</a></li>
-        </ul>
-      </nav>
-    </header>
+<!-- Hintergrundkreise -->
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+<div class="circle circle3"></div>
+<!-- Screen 1: Link-Eingabe -->
+<div id="screen1" class="screen active">
+  <h2>Gewinnspiel starten</h2>
+  <input type="text" id="postLink" placeholder="Link zum Post eingeben" />
+  <button onclick="showScreen('screen2')">Weiter</button>
+</div>
 
-    <main>
-      <!-- Screen 1: Link-Eingabe -->
-      <section id="screen1" class="screen">
-        <h1 id="intro">Willkommen bei Drawly</h1>
-        <input type="text" id="postLink" placeholder="Link zum Social Media Post eingeben" />
-        <button onclick="showScreen('screen2')">Vorschau</button>
-      </section>
+<!-- Screen 2: Vorschau -->
+<div id="screen2" class="screen">
+  <h2>Vorschau</h2>
+  <p>Likes: 132 • Kommentare: 240</p>
+  <img src="https://via.placeholder.com/500x300.png?text=Vorschau" style="width:100%; border-radius:10px;" />
+  <button onclick="showScreen('screen3')">Kriterien festlegen</button>
+</div>
 
-      <!-- Screen 2: Vorschau -->
-      <section id="screen2" class="screen hidden">
-        <h2>Vorschau des Beitrags</h2>
-        <div class="post-preview">
-          <!-- Hier könnte eine Vorschau des Beitrags angezeigt werden -->
-          <p>Beispielvorschau des Beitrags basierend auf dem eingegebenen Link.</p>
-        </div>
-        <button onclick="showScreen('screen3')">Weiter</button>
-      </section>
+<!-- Screen 3: Kriterien -->
+<div id="screen3" class="screen">
+  <h2>Kriterien</h2>
+  <label><input type="checkbox" id="requireHashtag"> Hashtag</label><br/>
+  <label><input type="checkbox" id="requireMention"> Freunde markieren</label><br/>
+  <label><input type="checkbox" id="requireFollow"> Muss folgen</label><br/>
+  <label>Anzahl Gewinner:</label><br/>
+  <input type="number" id="winnerCount" value="1" min="1" max="10"><br/>
+  <button onclick="startDraw()">Auslosung starten</button>
+</div>
 
-      <!-- Screen 3: Kriterienauswahl -->
-      <section id="screen3" class="screen hidden">
-        <h2 id="criteriaTitle">Teilnahmekriterien auswählen</h2>
-        <form id="criteriaForm">
-          <label><input type="checkbox" name="criteria" value="hashtag" /> Hashtag verwendet</label><br />
-          <label><input type="checkbox" name="criteria" value="mention" /> Benutzer markiert</label><br />
-          <label><input type="checkbox" name="criteria" value="follow" /> Seite gefolgt</label><br />
-        </form>
-        <button onclick="startDraw()">Auslosung starten</button>
-      </section>
-
-      <!-- Screen 4: Gewinneranzeige -->
-      <section id="screen4" class="screen hidden">
-        <h2 id="winnerTitle">🎉 Gewinner 🎉</h2>
-        <img id="winnerImage" src="images/profile-placeholder.png" alt="Profilbild Gewinner" />
-        <div id="winnerDisplay"></div>
-        <button onclick="takeScreenshot()">Screenshot speichern</button>
-      </section>
-    </main>
-
-    <!-- Login-Bereich -->
-    <section id="login" class="screen hidden">
-      <h2>Login / Registrierung</h2>
-      <input type="email" id="email" placeholder="E-Mail" />
-      <input type="password" id="password" placeholder="Passwort" />
-      <button onclick="register()">Registrieren</button>
-      <button onclick="login()">Einloggen</button>
-      <button onclick="logout()">Ausloggen</button>
-      <p id="userStatus"></p>
-    </section>
-
-    <!-- Sprachwahl -->
-    <footer>
-      <label for="languageSelector">Sprache:</label>
-      <select id="languageSelector" onchange="changeLanguage(this.value)">
-        <option value="de">Deutsch</option>
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="it">Italiano</option>
-        <option value="tr">Türkçe</option>
-        <option value="ru">Русский</option>
-        <option value="zh">中文</option>
-      </select>
-    </footer>
+<!-- Screen 4: Gewinner -->
+<div id="screen4" class="screen">
+  <h2>Gewinner</h2>
+  <div id="winnerAnimation" style="display:none;">
+    <img src="https://i.pravatar.cc/100?u=winner" alt="Gewinner" style="border-radius:50%; margin-bottom:1rem;" />
+    <h3 id="congratsText">Herzlichen Glückwunsch!</h3>
+    <button onclick="takeScreenshot()">Screenshot speichern</button>
   </div>
+</div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <!-- html2canvas für Screenshot -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <!-- Eigenes Script -->
-  <script src="script.js"></script>
+<!-- Dashboard -->
+<div id="dashboard" class="screen">
+  <h2>Dein Bereich</h2>
+  <p><strong>Plan:</strong> <span id="subscriptionStatus">free</span></p>
+  <p><strong>Tokens:</strong> <span id="userTokenCount">0</span></p>
+  <p><strong>Email:</strong> <span id="userEmail">user@example.com</span></p>
+  <input type="text" id="promoInput" placeholder="Promo-Code eingeben" />
+  <button onclick="applyPromoCode(document.getElementById('promoInput').value)">Einlösen</button>
+  <p><a href="#" onclick="logout()">Logout</a></p>
+</div>
+
+<!-- Premium-Zugangsmodal -->
+<div id="premiumModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1001;">
+  <h3>Premium-Zugriff erforderlich</h3>
+  <p>Mehr als 100 Kommentare. Wähle eine Option:</p>
+  <button onclick="startOneTimeCheckout('one299')">2,99 € (bis 500)</button><br/>
+  <button onclick="startOneTimeCheckout('one499')">4,99 € (bis 1000)</button><br/>
+  <button onclick="startOneTimeCheckout('one699')">6,99 € (über 1000)</button><br/>
+  <button onclick="showScreen('pricing')">Abo abschließen</button><br/><br/>
+  <button onclick="closePremiumModal()">Abbrechen</button>
+</div>
+
+<!-- Pricing -->
+<div id="pricing" class="screen">
+  <h2>Preise</h2>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:1rem;">
+    <div class="kpi-card">
+      <h3>Pro 500</h3>
+      <p><strong>8,99 €/Monat</strong></p>
+      <p>bis 500 Kommentare</p>
+      <button onclick="startStripeCheckout('pro500')">Jetzt abonnieren</button>
+    </div>
+    <div class="kpi-card">
+      <h3>Pro 1000</h3>
+      <p><strong>13,99 €/Monat</strong></p>
+      <p>bis 1000 Kommentare</p>
+      <button onclick="startStripeCheckout('pro1000')">Jetzt abonnieren</button>
+    </div>
+    <div class="kpi-card">
+      <h3>Pro+</h3>
+      <p><strong>18,99 €/Monat</strong></p>
+      <p>bis 10.000 Kommentare</p>
+      <button onclick="startStripeCheckout('proplus')">Jetzt abonnieren</button>
+    </div>
+  </div>
+</div>
+<script>
+  // Stripe Public Key einsetzen
+  const stripe = Stripe("pk_test_YOUR_PUBLIC_KEY");
+
+  const stripePriceIds = {
+    pro500: 'price_test_8_99',
+    pro1000: 'price_test_13_99',
+    proplus: 'price_test_18_99',
+    one299: 'price_test_one_299',
+    one499: 'price_test_one_499',
+    one699: 'price_test_one_699'
+  };
+
+  // Statusvariablen
+  let userPlan = localStorage.getItem("plan") || "free";
+  let userTokens = parseInt(localStorage.getItem("tokens") || "0", 10);
+  const commentLimits = { free: 100, pro500: 500, pro1000: 1000, proplus: 10000 };
+  let simulatedCommentCount = 240;
+
+  function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    window.scrollTo(0, 0);
+  }
+
+  function updateDashboard() {
+    document.getElementById("subscriptionStatus").textContent = userPlan;
+    document.getElementById("userTokenCount").textContent = userTokens;
+    document.getElementById("userEmail").textContent = "user@example.com";
+  }
+
+  function logout() {
+    localStorage.removeItem("plan");
+    localStorage.removeItem("tokens");
+    userPlan = "free";
+    userTokens = 0;
+    updateDashboard();
+    showScreen("screen1");
+  }
+
+  function applyPromoCode(code) {
+    if (code === "INFLU2024") {
+      userTokens += 3;
+      localStorage.setItem("tokens", userTokens);
+      alert("Promo-Code eingelöst: 3 Token gutgeschrieben.");
+      updateDashboard();
+    } else {
+      alert("Ungültiger Promo-Code.");
+    }
+  }
+
+  function openPremiumModal() {
+    document.getElementById("premiumModal").style.display = "block";
+  }
+
+  function closePremiumModal() {
+    document.getElementById("premiumModal").style.display = "none";
+  }
+
+  function checkAccessBeforeDraw() {
+    const limit = commentLimits[userPlan];
+    if (simulatedCommentCount <= limit) return true;
+
+    if (userTokens > 0) {
+      userTokens--;
+      localStorage.setItem("tokens", userTokens);
+      updateDashboard();
+      return true;
+    }
+
+    openPremiumModal();
+    return false;
+  }
+
+  function startDraw() {
+    if (!checkAccessBeforeDraw()) return;
+
+    showScreen("screen4");
+    document.getElementById("winnerAnimation").style.display = "none";
+
+    const comments = [
+      { user: "@sunlover" },
+      { user: "@moonbeam" },
+      { user: "@drawlyfan" }
+    ];
+
+    setTimeout(() => {
+      const winner = comments[Math.floor(Math.random() * comments.length)];
+      document.getElementById("congratsText").textContent = `🎉 Glückwunsch ${winner.user}!`;
+      document.getElementById("winnerAnimation").style.display = "block";
+      launchConfetti();
+    }, 2000);
+  }
+
+  function startStripeCheckout(plan) {
+    const priceId = stripePriceIds[plan];
+    stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'subscription',
+      successUrl: window.location.origin + `?checkout=success&type=${plan}`,
+      cancelUrl: window.location.origin + '?checkout=cancel'
+    });
+  }
+
+  function startOneTimeCheckout(type) {
+    const priceId = stripePriceIds[type];
+    stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      successUrl: window.location.origin + `?checkout=success&type=${type}`,
+      cancelUrl: window.location.origin + '?checkout=cancel'
+    });
+  }
+
+  function launchConfetti() {
+    const emojis = ["✨", "🌸", "🧡", "🌞"];
+    for (let i = 0; i < 40; i++) {
+      const el = document.createElement("div");
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.position = "absolute";
+      el.style.top = "-10px";
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.fontSize = "24px";
+      el.style.animation = `fall ${2 + Math.random()}s ease-out forwards`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+  }
+
+  function takeScreenshot() {
+    html2canvas(document.getElementById("screen4")).then(canvas => {
+      const link = document.createElement("a");
+      link.download = "drawly-gewinner.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    updateDashboard();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const isSuccess = urlParams.get("checkout") === "success";
+    const type = urlParams.get("type");
+
+    if (isSuccess && type) {
+      if (type.startsWith("pro")) {
+        userPlan = type;
+        localStorage.setItem("plan", userPlan);
+        alert("Abo aktiviert: " + type);
+      } else if (type.startsWith("one")) {
+        const tokens = type === "one299" ? 1 : type === "one499" ? 2 : 3;
+        userTokens += tokens;
+        localStorage.setItem("tokens", userTokens);
+        alert(`${tokens} Token nach Einmalzahlung gutgeschrieben.`);
+      }
+      updateDashboard();
+      showScreen("dashboard");
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  });
+</script>
 </body>
 </html>
