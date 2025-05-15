@@ -240,30 +240,29 @@
   </div>
 
   <!-- Screen 4: Gewinner -->
-  <div id="screen4" class="screen">
-    <h2>Gewinner</h2>
+<div id="screen4" class="screen">
+  <h2>Gewinner</h2>
 
-    <!-- Countdown vor der Ziehung -->
-    <div id="countdownBox" style="font-size:4rem; font-weight:bold; margin:1rem 0;"></div>
+  <!-- Countdown -->
+  <div id="countdownBox" style="font-size:3rem; margin:1rem 0;"></div>
 
-    <!-- Podest-Ansicht -->
-    <div id="winnersList" style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:2rem;"></div>
-
- <!-- Screenshot-Button -->
-<div id="screenshotBox" style="display:none; margin-top:1rem;">
-  <button onclick="takeScreenshot()">Screenshot speichern</button>
+  <!-- Podest -->
+  <div id="winnersList" style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;"></div>
 </div>
 
-<!-- Ziehungsprotokoll-Button -->
-<div id="protocolArea" style="display:none; margin-top:1rem;">
-  <button onclick="downloadDrawProtocol()">Ziehungsprotokoll herunterladen</button>
-</div>
-
-<!-- CSV-Export-Button -->
-<div id="exportArea" style="display:none; margin-top:1rem;">
-  <button onclick="exportCommentsToCSV()">Teilnehmerliste als CSV exportieren</button>
-</div>
+<!-- Aktionen unterhalb von screen4 -->
+<div style="display:flex; flex-direction:column; align-items:center; gap:1rem; margin-top:1rem; padding:1rem;">
+  <div id="screenshotBox" style="display:none;">
+    <button onclick="takeScreenshot()">Screenshot speichern</button>
   </div>
+  <div id="protocolArea" style="display:none;">
+    <button onclick="downloadDrawProtocol()">Ziehungsprotokoll herunterladen</button>
+  </div>
+  <div id="exportArea" style="display:none;">
+    <button onclick="exportCommentsToCSV()">Teilnehmerliste als CSV exportieren</button>
+  </div>
+</div>
+</div>
     <!-- Preise -->
   <div id="pricing" class="screen">
     <h2>Preise</h2>
