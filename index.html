@@ -208,18 +208,36 @@
     }
   }
   @media (max-width: 768px) {
-    nav {
-      display: none;
-      flex-direction: column;
-      background: var(--card-bg);
-      position: absolute;
-      top: 70px;
-      right: 20px;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px var(--shadow);
-      z-index: 10;
-    }
+  header {
+    position: relative;
+  }
+  nav {
+    display: none;
+    flex-direction: column;
+    background: var(--card-bg);
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px var(--shadow);
+    z-index: 10;
+  }
+  nav.active {
+    display: flex;
+  }
+  .burger {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    top: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--text);
+    z-index: 11;
+  }
+}
     nav.active {
       display: flex;
     }
