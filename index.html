@@ -47,10 +47,16 @@
     }
 
     nav {
+
       display: flex;
       gap: 1.5rem;
       font-size: 0.95rem;
-    }
+    
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease, background 0.3s ease;
+  background: #d6b59d;
+
 
     nav a {
       color: var(--text);
@@ -224,8 +230,11 @@
     z-index: 10;
   }
   nav.active {
+
     display: flex;
-  }
+  
+  max-height: 500px;
+}
   .burger {
     display: block;
     position: absolute;
