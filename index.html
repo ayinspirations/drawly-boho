@@ -207,11 +207,57 @@
       gap: 2rem;
     }
   }
+  @media (max-width: 768px) {
+    nav {
+      display: none;
+      flex-direction: column;
+      background: var(--card-bg);
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px var(--shadow);
+      z-index: 10;
+    }
+    nav.active {
+      display: flex;
+    }
+    .burger {
+      display: block;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--text);
+    }
+  }
+  .burger {
+    display: none;
+  }
 </style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('nav');
+    burger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      burger.textContent = nav.classList.contains('active') ? '✖' : '☰';
+    });
+
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        burger.textContent = '☰';
+      });
+    });
+  });
+</script>
 </head>
 <body>
   <header>
     <div class="logo">Drawly</div>
+    <button class="burger">☰</button>
     <nav>
       <a href="#">Start</a>
       <a href="#">Preise</a>
