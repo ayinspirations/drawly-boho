@@ -191,7 +191,23 @@
       margin-bottom: 0.3rem;
       color: var(--text);
     }
-  </style>
+    @media (max-width: 480px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-section {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .footer-columns {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+  }
+</style>
 </head>
 <body>
   <header>
