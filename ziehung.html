@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #fdf8f3;
+      background: linear-gradient(to bottom, #fdf8f3, #f5e9dd);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -78,16 +78,57 @@
       border-radius: 16px;
       margin-bottom: 1rem;
     }
-  </style>
+    @media (max-width: 480px) {
+    .card {
+      width: 90vw;
+      height: auto;
+      padding: 1rem;
+    }
+
+    .card.flipped {
+      width: 90vw;
+      height: auto;
+    }
+
+    .post-preview img {
+      width: 100%;
+      height: auto;
+    }
+
+    input[type="text"], input[type="number"] {
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+    }
+
+    .criteria {
+      font-size: 0.95rem;
+    }
+  }
+</style>
 </head>
 <body>
+  <header style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: transparent; border-bottom: 1px solid #e4d5c8; width: 100%; max-width: 1200px; margin: auto;">
+    <div class="logo" style="font-weight: 700; font-size: 1.8rem; color: #5c4438;">Drawly</div>
+    <nav style="display: flex; gap: 1.5rem; font-size: 0.95rem;">
+      <a href="#" style="color: #5c4438; text-decoration: none;">Start</a>
+      <a href="#" style="color: #5c4438; text-decoration: none;">Preise</a>
+      <a href="#" style="color: #5c4438; text-decoration: none;">Coming soon</a>
+      <a href="#" style="color: #5c4438; text-decoration: none;">Login</a>
+      <a href="#" style="color: #5c4438; text-decoration: none;">🌐</a>
+    </nav>
+  </header>
+
+  <main style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 1200px; margin: auto;">
 
   <div class="card" id="flipCard">
     <div class="front">
-      <div class="input-wrapper">
-        <input type="text" id="instaLink" placeholder="Link zum Instagram-Post eingeben">
+      <div style="display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 1rem;">
+        <div class="input-wrapper">$1</div>
+        <div><button onclick="startDraw()">Gewinnspiel starten</button></div>
       </div>
-      <button onclick="startDraw()">Gewinnspiel starten</button>
     </div>
 
     <div class="back">
@@ -170,8 +211,11 @@
 
     console.log("📤 Sende folgende Daten ans Backend:", data);
 
-    const isLoggedIn = false; // TODO: dynamisch prüfen (z. B. über Session)
-    const commentCount = 120; // TODO: dynamisch aus API abrufen
+    const isLoggedIn = localStorage.getItem('drawlyLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      showLoginModal();
+      return false;
+    } // TODO: dynamisch aus API abrufen
 
     if (!isLoggedIn) {
       alert('Bitte logge dich ein, um das Gewinnspiel auszulosen.');
@@ -185,8 +229,86 @@
 
     fetch('/api/draw', {
       method: 'POST',
-      headers:
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("Serverfehler");
+      return response.json();
+    })
+    .then(result => {
+      alert("🎉 Ziehung erfolgreich vorbereitet!");
+      console.log(result);
+    })
+    .catch(err => {
+      alert("❌ Fehler bei der Übertragung.");
+      console.error(err);
+    });
+
+    return false;
+  }
+  function showLoginModal() {
+    document.getElementById('loginModal').style.display = 'flex';
+  }
+
+  function performLogin() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if (email && password) {
+      // Simuliere erfolgreiches Login
+      localStorage.setItem('drawlyLoggedIn', 'true');
+      document.getElementById('loginModal').style.display = 'none';
+      alert('✅ Eingeloggt! Jetzt kannst du fortfahren.');
+    } else {
+      alert('Bitte fülle alle Felder aus.');
+    }
+  }
 </script>
 
+  </main>
+
+<div id="loginModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; justify-content: center; align-items: center;">
+  <div style="background: #fffaf6; padding: 2rem; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); max-width: 400px; width: 90%;">
+    <h2 style="margin-bottom: 1rem;">Login bei Drawly</h2>
+    <label for="email">E-Mail</label><br>
+    <input id="email" type="email" placeholder="you@example.com" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 12px;">
+    <label for="password">Passwort</label><br>
+    <input id="password" type="password" placeholder="••••••••" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1.5rem 0; border: 1px solid #ccc; border-radius: 12px;">
+    <button onclick="performLogin()" style="width: 100%; background: #c6a58c; color: white; border: none; padding: 0.8rem; border-radius: 20px; font-weight: 600; cursor: pointer;">Einloggen</button>
+    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Noch kein Konto? <a href="#" style="color: #5c4438;">Registrieren</a></p>
+  </div>
+</div>
+
+  <footer style="width: 100%; max-width: 1200px; margin: auto; padding: 4rem 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid #e4d5c8;">
+    <div style="flex: 1; min-width: 250px;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Drawly</h2>
+      <p style="font-size: 1rem;">SaaS solutions for the new digital age</p>
+    </div>
+    <div style="flex: 2; display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-around;">
+      <div>
+        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Solutions</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom: 0.3rem;">Giveaway Picker</li>
+          <li style="margin-bottom: 0.3rem;">Hashtag Finder</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Company</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom: 0.3rem;">About Us</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Connect</h4>
+        <ul style="display: flex; gap: 1rem; list-style: none; padding: 0;">
+          <li><a href="#" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" width="24"></a></li>
+          <li><a href="#" aria-label="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" width="24"></a></li>
+          <li><a href="#" aria-label="TikTok"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" width="24"></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
