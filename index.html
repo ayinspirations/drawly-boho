@@ -3,585 +3,275 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drawly – Social Giveaway Tool</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;500&display=swap" rel="stylesheet" />
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <title>Drawly – Gewinnspiel starten</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f5f0e6;
-      --accent: #e8dcd1;
-      --text: #5b3e31;
-      --button: #c8a989;
-      --button-hover: #b88e70;
+      --bg: #fdf8f3;
+      --bg-dark: #f5e9dd;
+      --accent: #d8b4a0;
+      --text: #5c4438;
+      --button: #c6a58c;
+      --button-hover: #b38b73;
+      --button-glow: #e3c0a7;
+      --card-bg: #fffaf6;
+      --shadow: rgba(0,0,0,0.1);
+      --line: #e4d5c8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--bg), var(--bg-dark));
       color: var(--text);
-      text-align: center;
-      overflow-x: hidden;
     }
 
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: var(--card-bg);
+      box-shadow: 0 4px 8px var(--shadow);
     }
 
-    .screen {
-      display: none;
-      max-width: 600px;
-      margin: 2rem auto;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-      padding: 2rem;
-      animation: fadeIn 0.4s ease;
-      position: relative;
-      z-index: 1;
+    header .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--text);
     }
 
-    .screen.active {
-      display: block;
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.95rem;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
     }
 
-    input, button {
-      padding: 12px;
-      border-radius: 50px;
+    .hero {
+      padding: 5rem 2rem;
+      margin: 0 auto;
+      max-width: 1200px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .input-section input {
+      padding: 1rem;
+      border-radius: 24px;
       border: 1px solid #ccc;
-      margin: 10px 5px;
-      width: 80%;
-      max-width: 400px;
-      font-family: inherit;
+      width: 100%;
       font-size: 1rem;
     }
 
-    button {
+    .input-section button {
+      padding: 1rem;
+      border: none;
+      border-radius: 24px;
       background: var(--button);
       color: white;
-      font-weight: bold;
-      cursor: pointer;
-      border: none;
-    }
-
-    button:hover {
-      background: var(--button-hover);
-    }
-
-    .criteria-card, .kpi-card {
-      background: #fffaf6;
-      border: 1px solid #e6dcd5;
-      border-radius: 16px;
-      padding: 1rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       font-size: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    nav#navMenu {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      background: rgba(232, 220, 209, 0.9);
-      padding: 1.5rem;
-      border-radius: 20px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.05);
-      margin: 0 2rem;
-      font-family: 'Playfair Display', serif;
-      animation: slideFadeIn 0.4s ease forwards;
-    }
-
-    nav#navMenu a {
-      text-decoration: none;
-      color: var(--text);
-      font-size: 1.2rem;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    nav#navMenu a:hover {
-      color: var(--button-hover);
-    }
-
-    #burger {
-      width: 40px;
-      height: 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      font-weight: 600;
       cursor: pointer;
-      padding: 5px;
-      border-radius: 10px;
-      transition: background 0.3s ease;
-      z-index: 1002;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      box-shadow: 0 4px 12px var(--button-glow);
     }
 
-    #burger:hover {
-      background: var(--accent);
+    .input-section button:hover {
+      background: var(--button-hover);
+      box-shadow: 0 6px 18px var(--button-glow);
+      transform: translateY(-2px);
     }
 
-    .bar {
-      height: 4px;
-      background-color: var(--text);
-      border-radius: 2px;
-      transition: all 0.3s ease;
-      transform-origin: center;
+    .section-divider {
+      height: 1px;
+      background-color: var(--line);
+      margin: 3rem auto;
+      max-width: 1200px;
     }
 
-    #burger.open .bar:nth-child(1) {
-      transform: rotate(45deg) translate(6px, 6px);
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 4rem auto;
+      max-width: 1200px;
+      padding: 0 2rem;
     }
 
-    #burger.open .bar:nth-child(2) {
-      opacity: 0;
+    .feature-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 24px;
+      box-shadow: 0 6px 20px var(--shadow);
+      text-align: center;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 100%;
     }
 
-    #burger.open .bar:nth-child(3) {
-      transform: rotate(-45deg) translate(6px, -6px);
+    .feature-card h3 {
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      font-size: 1.6rem;
+    }
+
+    .feature-card p {
+      font-size: 1.1rem;
+    }
+
+    .footer-section {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .footer-left {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .footer-left h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-left p {
+      font-size: 1rem;
+    }
+
+    .footer-columns {
+      display: flex;
+      gap: 2rem;
+      flex: 2;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      min-width: 250px;
+    }
+
+    .footer-column h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-column ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-column li {
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+      color: var(--text);
     }
   </style>
 </head>
 <body>
-  <header style="display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem;">
-    <div onclick="showScreen('screen1')" style="cursor:pointer; font-family:'Playfair Display'; font-size:1.8rem; color:var(--text);">
-      Drawly
-    </div>
-    <div id="burger" onclick="toggleMenu()">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
+  <header>
+    <div class="logo">Drawly</div>
+    <nav>
+      <a href="#">Start</a>
+      <a href="#">Preise</a>
+      <a href="#">Coming soon</a>
+      <a href="#">Login</a>
+      <a href="#">🌐</a>
+    </nav>
   </header>
 
-  <nav id="navMenu">
-    <a href="#" onclick="showScreen('screen1')">Start</a>
-    <a href="#" onclick="showScreen('dashboard')">Dashboard</a>
-    <a href="#" onclick="showScreen('pricing')">Preise</a>
-    <a href="#" onclick="showScreen('impressum')">Impressum</a>
-    <a href="#" onclick="openLoginModal()">Login</a>
-  </nav>
-
-  <div style="background: #fff3c7; color: #5b3e31; padding: 1rem; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); max-width: 600px; margin: 1rem auto; text-align:center;">
-    <strong>Hinweis:</strong> Du befindest dich im <em>Demo-Modus</em>. Alle Funktionen sind freigeschaltet.
-  </div>
-
-  <!-- Screen 1 -->
-  <div id="screen1" class="screen active">
-    <h2>Gewinnspiel starten</h2>
-    <input type="text" id="postLink" placeholder="Link zum Post eingeben" />
-    <button onclick="handlePostLink()">Weiter</button>
-  </div>
-    <!-- Screen 2: Vorschau -->
-  <div id="screen2" class="screen">
-    <h2>Vorschau</h2>
-    <div id="platformInfo" style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:1rem;">
-      <img id="platformIcon" src="" alt="Plattform" style="width:24px; height:24px;" />
-      <span id="platformText" style="font-style:italic; color:var(--text);"></span>
+  <section class="hero" style="text-align: center;">
+    <h1 style="font-size: 3rem; font-weight: 800;">Gewinnspiel auslosen – schnell & einfach</h1>
+    <div class="input-section" style="margin-top: 2rem;">
+      <input type="text" placeholder="Link zum Instagram-Post eingeben">
+      <button>Gewinnspiel starten</button>
     </div>
-    <p>Likes: 132 • Kommentare: 240</p>
-    <img src="https://via.placeholder.com/500x300.png?text=Vorschau" style="width:100%; border-radius:10px;" />
-    <button onclick="showScreen('screen3')">Kriterien festlegen</button>
-  </div>
+  </section>
 
-  <!-- Screen 3: Kriterien -->
-  <div id="screen3" class="screen">
-    <h2>Kriterien festlegen</h2>
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center;">
+  <div class="section-divider"></div>
 
-      <!-- Hashtag -->
-      <div class="criteria-card">
-        <h3 style="margin-bottom: 0.5rem;"># Hashtag</h3>
-        <p style="margin: 0 0 0.5rem;">Teilnehmer:innen müssen diesen Hashtag verwenden:</p>
-        <input type="text" id="hashtagInput" placeholder="#drawly" style="text-align:center;" />
-      </div>
-
-      <!-- Freunde markieren -->
-      <div class="criteria-card">
-        <h3 style="margin-bottom: 0.5rem;">👥 Freunde markieren</h3>
-        <p style="margin: 0 0 0.5rem;">Wie viele Personen sollen mindestens markiert werden?</p>
-        <input type="number" id="mentionCount" min="1" max="10" value="1" />
-      </div>
-
-      <!-- Folgen -->
-      <div class="criteria-card">
-        <h3 style="margin-bottom: 0.5rem;">✅ Folgen</h3>
-        <p style="margin: 0 0 0.5rem;">Folgende Accounts müssen gefolgt werden:</p>
-        <input type="text" id="follow1" placeholder="@drawly" />
-        <input type="text" id="follow2" placeholder="@zweiterAccount (optional)" />
-        <input type="text" id="follow3" placeholder="@dritterAccount (optional)" />
-      </div>
-
-      <!-- Like erforderlich -->
-      <div class="criteria-card" style="flex-direction: row; align-items: center; justify-content: center;">
-        <input type="checkbox" id="requireLike" style="margin-right: 10px;" />
-        <label for="requireLike">Beitrag muss geliked sein</label>
-      </div>
-
-      <!-- Anzahl Gewinner -->
-      <div class="criteria-card">
-        <h3 style="margin-bottom: 0.5rem;">🎁 Gewinner:innen</h3>
-        <p style="margin: 0 0 0.5rem;">Wie viele Personen sollen ausgelost werden?</p>
-        <input type="number" id="winnerCount" min="1" max="10" value="1" />
-      </div>
-
-      <button onclick="startDraw()">Auslosung starten</button>
+  <section class="video-demo" style="text-align:center; padding: 4rem 2rem; max-width: 1200px; width: 100%; margin: auto; box-sizing: border-box;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; width: 100%; max-width: 100%;">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 16px;"></iframe>
     </div>
-  </div>
+  </section>
 
-  <!-- Screen 4: Gewinner -->
-<div id="screen4" class="screen">
-  <h2>Gewinner</h2>
+  <div class="section-divider"></div>
 
-  <!-- Countdown -->
-  <div id="countdownBox" style="font-size:3rem; margin:1rem 0;"></div>
+  <section class="features">
+    <div class="feature-card">
+      <h3>In Sekunden loslegen – ohne App</h3>
+      <p>Keine Downloads, einfach starten</p>
+    </div>
+    <div class="feature-card">
+      <h3>Zertifiziertes Ziehungsprotokoll</h3>
+      <p>Mit Timestamp, Zufalls-ID und Export</p>
+    </div>
+    <div class="feature-card">
+      <h3>Regeln individuell einstellen</h3>
+      <p>Likes, Tags, Hashtags: Wähle, was zählt</p>
+    </div>
+    <div class="feature-card">
+      <h3>Ergebnisse sofort teilen</h3>
+      <p>Ideal für Stories & Reels</p>
+    </div>
+  </section>
 
-  <!-- Podest -->
-  <div id="winnersList" style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;"></div>
+  <div class="section-divider"></div>
+
+  <section class="footer-section">
+    <div class="footer-left">
+  <h2>Drawly</h2>
+  <p>SaaS solutions for the new digital age</p>
 </div>
-
-<!-- Aktionen unterhalb von screen4 -->
-<div style="display:flex; flex-direction:column; align-items:center; gap:1rem; margin-top:1rem; padding:1rem;">
-  <div id="screenshotBox" style="display:none;">
-    <button onclick="takeScreenshot()">Screenshot speichern</button>
-  </div>
-  <div id="protocolArea" style="display:none;">
-    <button onclick="downloadDrawProtocol()">Ziehungsprotokoll herunterladen</button>
-  </div>
-  <div id="exportArea" style="display:none;">
-    <button onclick="exportCommentsToCSV()">Teilnehmerliste als CSV exportieren</button>
-  </div>
-</div>
-</div>
-    <!-- Preise -->
-  <div id="pricing" class="screen">
-    <h2>Preise</h2>
-    <h3>Monatliche Abos</h3>
-    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin:1rem 0;">
-      <div class="kpi-card">
-        <h3>Pro 500</h3>
-        <p><strong>8,99 €/Monat</strong></p>
-        <p>Bis 500 Kommentare<br/>1 Token pro Monat</p>
-        <button onclick="startStripeCheckout('pro500')">Abo starten</button>
+    <div class="footer-columns">
+      <div class="footer-column">
+  <h4>Solutions</h4>
+  <ul>
+    <li>Giveaway Picker</li>
+    <li>Hashtag Finder</li>
+  </ul>
       </div>
-      <div class="kpi-card">
-        <h3>Pro 1000</h3>
-        <p><strong>13,99 €/Monat</strong></p>
-        <p>Bis 1000 Kommentare<br/>3 Token pro Monat</p>
-        <button onclick="startStripeCheckout('pro1000')">Abo starten</button>
+      <div class="footer-column">
+  <h4>Company</h4>
+  <ul>
+    <li>About Us</li>
+  </ul>
       </div>
-      <div class="kpi-card">
-        <h3>Pro+</h3>
-        <p><strong>18,99 €/Monat</strong></p>
-        <p>Bis 10.000 Kommentare<br/>Unlimitierte Token</p>
-        <button onclick="startStripeCheckout('proplus')">Abo starten</button>
+      <div class="footer-column">
+  <h4>Connect</h4>
+  <ul style="display: flex; gap: 1rem; list-style: none; padding: 0;">
+    <li><a href="#" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" width="24"></a></li>
+    <li><a href="#" aria-label="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" width="24"></a></li>
+    <li><a href="#" aria-label="TikTok"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" width="24"></a></li>
+  </ul>
       </div>
     </div>
-
-    <h3>Einmalzahlungen</h3>
-    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin:1rem 0;">
-      <div class="kpi-card">
-        <h3>Bis 500 Kommentare</h3>
-        <p><strong>2,99 €</strong></p>
-        <button onclick="startOneTimeCheckout('one299')">Einmal zahlen</button>
-      </div>
-      <div class="kpi-card">
-        <h3>Bis 1000 Kommentare</h3>
-        <p><strong>4,99 €</strong></p>
-        <button onclick="startOneTimeCheckout('one499')">Einmal zahlen</button>
-      </div>
-      <div class="kpi-card">
-        <h3>Über 1000 Kommentare</h3>
-        <p><strong>6,99 €</strong></p>
-        <button onclick="startOneTimeCheckout('one699')">Einmal zahlen</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dashboard -->
-  <div id="dashboard" class="screen">
-    <h2>Dein Bereich</h2>
-    <p><strong>Plan:</strong> <span id="subscriptionStatus">free</span></p>
-    <p><strong>Tokens:</strong> <span id="userTokenCount">0</span></p>
-    <p><strong>Email:</strong> <span id="userEmail">user@example.com</span></p>
-    <input type="text" id="promoInput" placeholder="Promo-Code eingeben" />
-    <button onclick="applyPromoCode(document.getElementById('promoInput').value)">Einlösen</button>
-    <p><a href="#" onclick="logout()">Logout</a></p>
-  </div>
-
-  <!-- Login-Modal -->
-  <div id="loginModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1001;">
-    <h3>Login</h3>
-    <input type="email" id="loginEmail" placeholder="E-Mail" /><br/>
-    <input type="password" id="loginPassword" placeholder="Passwort" /><br/><br/>
-    <button onclick="login()">Einloggen</button>
-    <button onclick="register()">Registrieren</button><br/><br/>
-    <button onclick="closeLoginModal()">Abbrechen</button>
-  </div>
-
-  <!-- Premium-Modal -->
-  <div id="premiumModal" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:white; padding:2rem; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1001;">
-    <h3>Premium-Zugriff erforderlich</h3>
-    <p>Mehr als 100 Kommentare. Wähle eine Option:</p>
-    <button onclick="startOneTimeCheckout('one299')">2,99 € (bis 500)</button><br/>
-    <button onclick="startOneTimeCheckout('one499')">4,99 € (bis 1000)</button><br/>
-    <button onclick="startOneTimeCheckout('one699')">6,99 € (über 1000)</button><br/>
-    <button onclick="showScreen('pricing')">Abo abschließen</button><br/><br/>
-    <button onclick="closePremiumModal()">Abbrechen</button>
-  </div>
-    <script>
-    // Navigation
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    function toggleMenu() {
-      const burger = document.getElementById('burger');
-      const nav = document.getElementById('navMenu');
-      burger.classList.toggle('open');
-      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    // Plattform-Erkennung
-    function handlePostLink() {
-      const link = document.getElementById('postLink').value;
-      let platform = '';
-      if (link.includes('instagram.com')) platform = 'Instagram';
-      else if (link.includes('facebook.com')) platform = 'Facebook';
-      else if (link.includes('youtube.com')) platform = 'YouTube';
-      else if (link.includes('tiktok.com')) platform = 'TikTok';
-      else platform = 'Unbekannt';
-      document.getElementById('platformText').textContent = platform;
-      const iconMap = {
-        'Instagram': 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png',
-        'Facebook': 'https://cdn-icons-png.flaticon.com/512/733/733547.png',
-        'YouTube': 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png',
-        'TikTok': 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png',
-        'Unbekannt': 'https://cdn-icons-png.flaticon.com/512/565/565547.png'
-      };
-      document.getElementById('platformIcon').src = iconMap[platform];
-      showScreen('screen2');
-    }
-
-    // Dummy-Kommentare
-    const comments = Array.from({ length: 150 }, (_, i) => ({
-      user: `user${i + 1}`,
-      text: `Kommentar ${i + 1}`,
-      profilePic: `https://i.pravatar.cc/100?img=${(i % 70) + 1}`
-    }));
-
-    // Ziehung starten
-    function startDraw() {
-      showScreen('screen4');
-      document.getElementById('winnersList').innerHTML = '';
-      document.getElementById('countdownBox').textContent = '';
-      document.getElementById('exportArea').style.display = 'none';
-      document.getElementById('protocolArea').style.display = 'none';
-      document.getElementById('screenshotBox').style.display = 'none';
-
-      const winnerCount = parseInt(document.getElementById('winnerCount').value) || 1;
-      const countdownBox = document.getElementById('countdownBox');
-      let count = 3;
-      countdownBox.textContent = count;
-      const countdownInterval = setInterval(() => {
-        count--;
-        if (count > 0) {
-          countdownBox.textContent = count;
-        } else {
-          clearInterval(countdownInterval);
-          countdownBox.textContent = '';
-          // Gewinner ziehen
-          const shuffled = comments.sort(() => 0.5 - Math.random());
-          const winners = shuffled.slice(0, winnerCount);
-          window.lastDrawWinners = winners;
-          showWinners(winners);
-          launchConfetti();
-          document.getElementById('exportArea').style.display = 'block';
-          document.getElementById('protocolArea').style.display = 'block';
-          document.getElementById('screenshotBox').style.display = 'block';
-        }
-      }, 1000);
-    }
-
-    // Gewinner anzeigen
-function showWinners(winners) {
-  const container = document.getElementById("winnersList");
-  container.innerHTML = '';
-
-  winners.forEach((winner, index) => {
-    const div = document.createElement("div");
-    div.style.display = 'flex';
-    div.style.flexDirection = 'column';
-    div.style.alignItems = 'center';
-    div.style.justifyContent = 'flex-end';
-    div.style.width = '100px';
-    div.style.height = `${100 + (3 - index) * 20}px`;
-    div.style.background = '#e8dcd1';
-    div.style.borderRadius = '10px 10px 0 0';
-    div.style.margin = '0 5px';
-    div.style.padding = '10px';
-    div.style.transition = 'opacity 0.6s ease';
-    div.style.opacity = 0;
-
-    const img = document.createElement("img");
-    img.src = winner.profilePic;
-    img.alt = winner.user;
-    img.style.width = '60px';
-    img.style.height = '60px';
-    img.style.borderRadius = '50%';
-    img.style.border = '3px solid #c8a989';
-    img.style.marginBottom = '10px';
-
-    const name = document.createElement("div");
-    name.textContent = winner.user;
-    name.style.fontWeight = 'bold';
-
-    const place = document.createElement("div");
-    place.textContent = `${index + 1}. Platz`;
-    place.style.fontSize = '0.9rem';
-    place.style.color = '#5b3e31';
-
-    div.appendChild(img);
-    div.appendChild(name);
-    div.appendChild(place);
-
-    container.appendChild(div);
-
-    // Sichtbarkeit mit Verzögerung einblenden
-    setTimeout(() => {
-      div.style.opacity = 1;
-    }, 1000 * index);
-  });
-}
-      
-    // Konfetti
-    function launchConfetti() {
-      const emojis = ['🎉', '✨', '🎊', '💫', '🌟'];
-      for (let i = 0; i < 100; i++) {
-        const emoji = document.createElement('div');
-        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.style.position = 'fixed';
-        emoji.style.top = '-50px';
-        emoji.style.left = `${Math.random() * 100}%`;
-        emoji.style.fontSize = '1.5rem';
-        emoji.style.animation = `fall ${2 + Math.random() * 3}s linear forwards`;
-        document.body.appendChild(emoji);
-        setTimeout(() => {
-          emoji.remove();
-        }, 5000);
-      }
-    }
-
-    // Screenshot
-    function takeScreenshot() {
-      html2canvas(document.getElementById('screen4')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'gewinner.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
-
-    // CSV-Export
-    function exportCommentsToCSV() {
-      const rows = [['Benutzer', 'Kommentar']];
-      comments.forEach(c => rows.push([c.user, c.text]));
-      let csvContent = 'data:text/csv;charset=utf-8,' + rows.map(e => e.join(',')).join('\n');
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'teilnehmerliste.csv');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    // Ziehungsprotokoll
-    function downloadDrawProtocol() {
-      const winners = window.lastDrawWinners || [];
-      const timestamp = new Date().toLocaleString();
-      const platform = document.getElementById('platformText').textContent || 'Unbekannt';
-      const criteria = [];
-      const hashtag = document.getElementById('hashtagInput').value;
-      if (hashtag) criteria.push(`Hashtag: ${hashtag}`);
-      const mentions = document.getElementById('mentionCount').value;
-      if (mentions) criteria.push(`Markierungen: mind. ${mentions}`);
-      const follow1 = document.getElementById('follow1').value;
-      const follow2 = document.getElementById('follow2').value;
-      const follow3 = document.getElementById('follow3').value;
-      const follows = [follow1, follow2, follow3].filter(f => f);
-      if (follows.length) criteria.push(`Follows: ${follows.join(', ')}`);
-      if (document.getElementById('requireLike').checked) criteria.push('Like erforderlich');
-      const protocol = `Drawly Ziehungsprotokoll\nDatum: ${timestamp}\nPlattform: ${platform}\nKriterien:\n- ${criteria.join('\n- ')}\nTeilnehmer: ${comments.length}\nGewinner:\n${winners.map((w, i) => `${i + 1}. ${w.user}`).join('\n')}\nZufalls-ID: DRAWLY-${Date.now()}`;
-      const blob = new Blob([protocol], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'ziehungsprotokoll.txt';
-      link.click();
-    }
-
-    // Stripe Checkout (Dummy)
-    function startStripeCheckout(plan) {
-      alert(`Stripe Checkout für Plan: ${plan}`);
-    }
-
-    function startOneTimeCheckout(plan) {
-      alert(`Einmalzahlung für Plan: ${plan}`);
-    }
-
-    // Login & Promo (Dummy)
-    function openLoginModal() {
-      document.getElementById('loginModal').style.display = 'block';
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').style.display = 'none';
-    }
-
-    function login() {
-      alert('Login erfolgreich');
-      closeLoginModal();
-    }
-
-    function register() {
-      alert('Registrierung erfolgreich');
-      closeLoginModal();
-    }
-
-    function logout() {
-      alert('Logout erfolgreich');
-    }
-
-    function applyPromoCode(code) {
-      alert(`Promo-Code ${code} angewendet`);
-    }
-
-    function closePremiumModal() {
-      document.getElementById('premiumModal').style.display = 'none';
-    }
-  </script>
-
-  <style>
-    @keyframes fall {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity 
-                to { opacity: 1; }
-    }
-  </style>
+  </section>
 </body>
 </html>
