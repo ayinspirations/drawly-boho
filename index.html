@@ -193,26 +193,18 @@
     color: var(--text);
   }
 
-  .burger {
-    display: none;
-  }
+  
 
   @media (max-width: 768px) {
   nav {
-    display: none;
+    display: flex;
     flex-direction: column;
     background: var(--card-bg);
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px var(--shadow);
-    z-index: 10;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: static;
+    padding: 1rem 0;
+    gap: 1rem;
   }
+}
   nav.active {
     display: flex;
     opacity: 1;
@@ -229,7 +221,7 @@
     color: var(--text);
     z-index: 11;
   }
-}
+
 
     nav.active {
       display: flex;
@@ -264,11 +256,55 @@
       gap: 2rem;
     }
   }
+  .burger {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .burger {
+      display: block;
+      position: absolute;
+      right: 2rem;
+      top: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--text);
+      z-index: 11;
+    }
+
+    nav {
+      display: none;
+      flex-direction: column;
+      background: #c8a989;
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px var(--shadow);
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    nav.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const burger = document.querySelector('.burger');
+    const burger = document.createElement('button');
+    burger.className = 'burger';
+    burger.textContent = '☰';
+    document.querySelector('header').appendChild(burger);
+
     const nav = document.querySelector('nav');
+
     burger.addEventListener('click', () => {
       nav.classList.toggle('active');
       burger.textContent = nav.classList.contains('active') ? '✖' : '☰';
@@ -282,11 +318,12 @@
     });
   });
 </script>
+
 </head>
 <body>
   <header>
     <div class="logo">Drawly</div>
-    <button class="burger">☰</button>
+    
     <nav>
       <a href="#">Start</a>
       <a href="#">Preise</a>
