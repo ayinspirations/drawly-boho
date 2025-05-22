@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drawly Vorschau-Test</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fdf8f3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .card {
+      width: 400px;
+      height: 250px;
+      background: #fffaf6;
+      border-radius: 24px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.6s ease, height 0.6s ease, width 0.6s ease;
+      transform-style: preserve-3d;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+      height: 420px;
+      width: 300px;
+    }
+
+    .front, .back {
+      backface-visibility: hidden;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .front {
+      z-index: 2;
+    }
+
+    .back {
+      transform: rotateY(180deg);
+    }
+
+    .input-wrapper {
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 0.8rem 1.2rem;
+      border-radius: 20px;
+      border: none;
+      background: #c6a58c;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .post-preview img {
+      width: 100%;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="flipCard">
+    <div class="front">
+      <div class="input-wrapper">
+        <input type="text" id="instaLink" placeholder="Link zum Instagram-Post eingeben">
+      </div>
+      <button onclick="startDraw()">Gewinnspiel starten</button>
+    </div>
+
+    <div class="back">
+      <div class="post-preview">
+        <img src="https://via.placeholder.com/300x300.png?text=Post+Vorschau" alt="Post Vorschau">
+        <p><strong>Likes:</strong> 245</p>
+        <p><strong>Kommentare:</strong> 68</p>
+        <button onclick="showCriteria()">Kriterien festlegen</button>
+      </div>
+    </div>
+    <div class="criteria" style="display:none; margin-top: 1rem; text-align:left;">
+      <h3>Kriterien festlegen</h3>
+      <form id="criteriaForm" onsubmit="return submitCriteria(event)">
+        <label><strong>Beitrag geliked?</strong></label><br>
+        <input type="radio" name="liked" value="yes" checked> Ja
+        <input type="radio" name="liked" value="no"> Nein
+        <br><br>
+
+        <label for="hashtags"><strong>Erwähnte Hashtags</strong> (mit #, durch Komma trennen):</label><br>
+        <input type="text" id="hashtags" name="hashtags" placeholder="#katze, #giveaway"><br><br>
+
+        <label for="minMentions"><strong>Mindestanzahl Erwähnungen (1-5):</strong></label><br>
+        <input type="number" id="minMentions" name="minMentions" min="1" max="5"><br><br>
+
+        <label for="explicitMentions"><strong>Explizite Erwähnungen</strong> (nur mit @, durch Komma trennen):</label><br>
+        <input type="text" id="explicitMentions" name="explicitMentions" placeholder="@username1, @username2"><br><br>
+
+        <button type="submit">Gewinnspiel auslosen</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const postUrl = params.get('url');
+
+  if (postUrl) {
+    document.addEventListener('DOMContentLoaded', () => {
+      const card = document.getElementById('flipCard');
+      const backContent = card.querySelector('.back .post-preview');
+      const urlText = document.createElement('p');
+      urlText.innerHTML = `<strong>Post:</strong> <a href="${postUrl}" target="_blank">${postUrl}</a>`;
+      backContent.insertBefore(urlText, backContent.firstChild);
+      card.classList.add('flipped');
+    });
+  }
+
+  function startDraw() {
+    const link = document.getElementById('instaLink').value;
+    if (link.includes('instagram.com')) {
+      document.getElementById('flipCard').classList.add('flipped');
+    } else {
+      alert('Bitte einen gültigen Instagram-Link eingeben.');
+    }
+  }
+  function showCriteria() {
+    const criteria = document.querySelector('.criteria');
+    const preview = document.querySelector('.post-preview');
+    if (criteria && preview) {
+      preview.style.display = 'none';
+      criteria.style.display = 'block';
+    }
+  }
+  function submitCriteria(event) {
+    event.preventDefault();
+
+    const data = {
+      liked: document.querySelector('input[name="liked"]:checked').value,
+      hashtags: document.getElementById('hashtags').value
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag.startsWith('#')),
+      minMentions: parseInt(document.getElementById('minMentions').value, 10),
+      explicitMentions: document.getElementById('explicitMentions').value
+        .split(',')
+        .map(user => user.trim())
+        .filter(user => user.startsWith('@')),
+      postUrl: postUrl || null,
+    };
+
+    console.log("📤 Sende folgende Daten ans Backend:", data);
+
+    const isLoggedIn = false; // TODO: dynamisch prüfen (z. B. über Session)
+    const commentCount = 120; // TODO: dynamisch aus API abrufen
+
+    if (!isLoggedIn) {
+      alert('Bitte logge dich ein, um das Gewinnspiel auszulosen.');
+      return false;
+    }
+
+    if (commentCount > 100) {
+      alert('Das Gewinnspiel enthält mehr als 100 Kommentare. Bitte aktiviere ein Abo oder tätige eine Einmalzahlung.');
+      return false;
+    }
+
+    fetch('/api/draw', {
+      method: 'POST',
+      headers:
+</script>
+
+</body>
+</html>

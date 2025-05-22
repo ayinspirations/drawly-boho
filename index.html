@@ -337,7 +337,7 @@
     <h1 style="font-size: 3rem; font-weight: 800;">Gewinnspiel auslosen – schnell & einfach</h1>
     <div class="input-section" style="margin-top: 2rem;">
       <input type="text" placeholder="Link zum Instagram-Post eingeben">
-      <button>Gewinnspiel starten</button>
+      <button id="startDraw">Gewinnspiel starten</button>
     </div>
   </section>
 
@@ -401,5 +401,15 @@
       </div>
     </div>
   </section>
+  <script>
+  document.getElementById('startDraw').addEventListener('click', function () {
+    const link = document.querySelector('input[type="text"]').value;
+    if (link.includes('instagram.com')) {
+      window.open('ziehung.html?url=' + encodeURIComponent(link), '_blank');
+    } else {
+      alert('Bitte einen gültigen Instagram-Link eingeben.');
+    }
+  });
+</script>
 </body>
 </html>
