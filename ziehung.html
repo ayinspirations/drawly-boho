@@ -1,394 +1,323 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drawly Vorschau-Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drawly – Gewinnspiel starten</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #fdf8f3;
+      --bg-dark: #f5e9dd;
+      --accent: #d8b4a0;
+      --text: #5c4438;
+      --button: #c6a58c;
+      --button-hover: #b38b73;
+      --button-glow: #e3c0a7;
+      --card-bg: #fffaf6;
+      --shadow: rgba(0,0,0,0.1);
+      --line: #e4d5c8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom, #fdf8f3, #f5e9dd);
+      background: linear-gradient(to bottom, var(--bg), var(--bg-dark));
+      color: var(--text);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: var(--card-bg);
+      box-shadow: 0 4px 8px var(--shadow);
+      position: relative;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--text);
+    }
+    nav {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.95rem;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+    }
+    .hero {
+      padding: 5rem 2rem;
+      margin: 0 auto;
+      max-width: 1200px;
+      text-align: center;
+    }
+    .input-section {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      height: 100vh;
-      margin: 0;
-      padding: 2rem;
+      gap: 1rem;
+      max-width: 500px;
+      margin: 0 auto;
     }
-
-    .card {
-      width: 400px;
-      height: 250px;
-      background: #fffaf6;
+    .input-section input {
+      padding: 1rem;
       border-radius: 24px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      text-align: center;
-      transition: transform 0.6s ease, height 0.6s ease, width 0.6s ease;
-      transform-style: preserve-3d;
-    }
-
-    .card.flipped {
-      transform: rotateY(180deg);
-      height: 420px;
-      width: 300px;
-    }
-
-    .front, .back {
-      backface-visibility: hidden;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-    }
-
-    .front {
-      z-index: 2;
-    }
-
-    .back {
-      transform: rotateY(180deg);
-    }
-
-    .input-wrapper {
-      margin-bottom: 1rem;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 20px;
       border: 1px solid #ccc;
-    }
-
-    button {
-      padding: 0.8rem 1.2rem;
-      border-radius: 20px;
-      border: none;
-      background: #c6a58c;
-      color: white;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .post-preview img {
       width: 100%;
-      border-radius: 16px;
-      margin-bottom: 1rem;
+      font-size: 1rem;
     }
-
-    @media (max-width: 480px) {
-      .card {
-        width: 90vw;
-        height: auto;
-        padding: 1rem;
-      }
-
-      .card.flipped {
-        width: 90vw;
-        height: auto;
-      }
-
-      .post-preview img {
-        width: 100%;
-        height: auto;
-      }
-
-      input[type="text"], input[type="number"] {
-        font-size: 1rem;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .criteria {
-        font-size: 0.95rem;
-      }
-    }
-      @media (max-width: 768px) {
-      header,
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem;
-      }
-
-      nav {
-        flex-wrap: wrap;
-        gap: 0.75rem;
-      }
-
-      .card {
-        width: 95vw;
-        padding: 1rem;
-        height: auto;
-      }
-
-      .card.flipped {
-        width: 95vw;
-        height: auto;
-      }
-
-      .post-preview img,
-      input[type="text"],
-      input[type="email"],
-      input[type="password"],
-      input[type="number"],
-      button {
-        width: 100% !important;
-        max-width: 100% !important;
-      }
-
-      .criteria,
-      .post-preview,
-      form {
-        width: 100%;
-        padding: 0 0.5rem;
-      }
-
-      .logo {
-        font-size: 1.4rem;
-      }
-    }
-      .burger {
-      display: none;
-      background: none;
+    .input-section button {
+      padding: 1rem;
       border: none;
-      font-size: 2rem;
-      color: #5c4438;
+      border-radius: 24px;
+      background: var(--button);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      box-shadow: 0 4px 12px var(--button-glow);
     }
-
+    .input-section button:hover {
+      background: var(--button-hover);
+      box-shadow: 0 6px 18px var(--button-glow);
+      transform: translateY(-2px);
+    }
+    .section-divider {
+      height: 1px;
+      background-color: var(--line);
+      margin: 3rem auto;
+      max-width: 1200px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin: 4rem auto;
+      max-width: 1200px;
+      padding: 0 2rem;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 24px;
+      box-shadow: 0 6px 20px var(--shadow);
+      text-align: center;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .feature-card h3 {
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      font-size: 1.6rem;
+    }
+    .feature-card p {
+      font-size: 1.1rem;
+    }
+    .footer-section {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .footer-left {
+      flex: 1;
+      min-width: 250px;
+    }
+    .footer-columns {
+      display: flex;
+      gap: 2rem;
+      flex: 2;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+    .footer-column h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .footer-column ul {
+      list-style: none;
+      padding: 0;
+    }
+    .footer-column li {
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+    }
+    .burger {
+      display: none;
+    }
     @media (max-width: 768px) {
-      nav {
-        display: none;
-        flex-direction: column;
-        background: #fffaf6;
-        position: absolute;
-        top: 70px;
-        right: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        padding: 1rem;
-        z-index: 1000;
-      }
-
-      nav.active {
-        display: flex;
-      }
-
-      .burger {
-        display: block;
-        position: absolute;
-        right: 2rem;
-        top: 1.5rem;
-        z-index: 1001;
-      }
+  .burger {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    top: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--text);
+    z-index: 11;
+  }
+  nav {
+    display: none;
+    flex-direction: column;
+    background: var(--button);
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px var(--shadow);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  nav.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
     }
-  </style>
-</head>
-<body>
-  <header style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: transparent; border-bottom: 1px solid #e4d5c8; width: 100%; max-width: 1200px; margin: auto;">
-    <div class="logo" style="font-weight: 700; font-size: 1.8rem; color: #5c4438;">Drawly</div>
-    <button class="burger" onclick="toggleMenu()">☰</button>
-    <nav>
-      <a href="#" style="color: #5c4438; text-decoration: none;">Start</a>
-      <a href="#" style="color: #5c4438; text-decoration: none;">Preise</a>
-      <a href="#" style="color: #5c4438; text-decoration: none;">Coming soon</a>
-      <a href="#" onclick="showLoginModal(); return false;" style="color: #5c4438; text-decoration: none;">Login</a>
-      <a href="#" style="color: #5c4438; text-decoration: none;">🌐</a>
-    </nav>
-  </header>
-  <main style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 1200px; margin: auto;">
-  <div class="card" id="flipCard" style="margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-  <div class="front">
-    <div style="display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 1rem;">
-      <div class="input-wrapper">
-        <input type="text" id="instaLink" placeholder="Link zum Instagram-Post eingeben">
-      </div>
-      <div>
-        <button onclick="startDraw()">Gewinnspiel starten</button>
-      </div>
-    </div>
-  </div>
-  <div class="back">
-    <div class="post-preview" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-  <img src="https://via.placeholder.com/300x300.png?text=Post+Vorschau" alt="Post Vorschau">
-  <p style="margin: 0;"><strong>Likes:</strong> 245</p>
-  <p style="margin: 0;"><strong>Kommentare:</strong> 68</p>
-  <div style="margin-top: 1rem;">
-    <button onclick="showCriteria()">Kriterien festlegen</button>
-  </div>
-    </div>
-    <div class="criteria" style="display:none; margin-top: 1rem; text-align:left;">
-      <h3>Kriterien festlegen</h3>
-      <form id="criteriaForm" onsubmit="return submitCriteria(event)" style="max-width: 100%; display: flex; flex-direction: column; align-items: center;">
-        <label><strong>Beitrag geliked?</strong></label><br>
-        <input type="radio" name="liked" value="yes" checked> Ja
-        <input type="radio" name="liked" value="no"> Nein<br><br>
-
-        <label for="hashtags"><strong>Erwähnte Hashtags</strong> (mit #, durch Komma trennen):</label><br>
-        <input type="text" id="hashtags" name="hashtags" placeholder="#katze, #giveaway" style="width: 100%; max-width: 300px;"><br><br>
-
-        <label for="minMentions"><strong>Mindestanzahl Erwähnungen (1-5):</strong></label><br>
-        <input type="number" id="minMentions" name="minMentions" min="1" max="5" style="width: 100%; max-width: 300px;"><br><br>
-
-        <label for="explicitMentions"><strong>Explizite Erwähnungen</strong> (nur mit @, durch Komma trennen):</label><br>
-        <input type="text" id="explicitMentions" name="explicitMentions" placeholder="@username1, @username2" style="width: 100%; max-width: 300px;"><br><br>
-
-        <button type="submit">Gewinnspiel auslosen</button>
-      </form>
-    </div>
-  </div>
-</div>
+    @media (max-width: 480px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+    .input-section {
+      padding: 0 1rem;
+    }
+    .features {
+      grid-template-columns: 1fr;
+      padding: 0 1rem;
+    }
+    .feature-card {
+      padding: 1.5rem;
+    }
+    .footer-section {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+    .footer-columns {
+      flex-direction: column;
+      gap: 2rem;
+    }
+    #previewModal > div,
+    #loginModal > div {
+      width: 90%;
+      padding: 1.5rem;
+    }
+  }
+</style>
   <script>
-    function showRegisterModal() {
-      document.getElementById('loginModal').style.display = 'none';
-      document.getElementById('registerModal').style.display = 'flex';
-    }
-
-    function performRegister() {
-      const name = document.getElementById('regName').value;
-      const email = document.getElementById('regEmail').value;
-      const password = document.getElementById('regPassword').value;
-
-      if (!name || !email || !password) {
-        alert('Bitte alle Felder ausfüllen.');
-        return;
-      }
-
-      const userData = {
-        name,
-        email,
-        password
-      };
-
-      console.log("📤 Registrierung wird vorbereitet:", userData);
-
-      fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      })
-      .then(response => {
-        if (!response.ok) throw new Error("Fehler bei der Registrierung");
-        return response.json();
-      })
-      .then(result => {
-        console.log("✅ Registriert:", result);
-        localStorage.setItem('drawlyLoggedIn', 'true');
-        document.getElementById('registerModal').style.display = 'none';
-        alert('✅ Registrierung erfolgreich! Du bist jetzt eingeloggt.');
-      })
-      .catch(err => {
-        alert("❌ Registrierung fehlgeschlagen. Versuche es später erneut.");
-        console.error(err);
-      });
-    }
-  function startDraw() {
-  const link = document.getElementById('instaLink').value;
-  if (link.includes('instagram.com')) {
-    document.getElementById('flipCard').classList.add('flipped');
-  } else {
-    alert('Bitte einen gültigen Instagram-Link eingeben.');
-  }
-}
-function showCriteria() {
-  document.querySelector('.post-preview').style.display = 'none';
-  document.querySelector('.criteria').style.display = 'block';
-}
-function showLoginModal() {
-  document.getElementById('registerModal').style.display = 'none';
-  document.getElementById('loginModal').style.display = 'flex';
-}
-
-function performLogin() {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  if (email && password) {
-    localStorage.setItem('drawlyLoggedIn', 'true');
-    document.getElementById('loginModal').style.display = 'none';
-    alert('✅ Eingeloggt! Jetzt kannst du fortfahren.');
-  } else {
-    alert('Bitte fülle alle Felder aus.');
-  }
-}
-
-function checkLoginStatus() {
-  const isLoggedIn = localStorage.getItem('drawlyLoggedIn') === 'true';
-  if (!isLoggedIn) {
-    showLoginModal();
-  }
-}
-
-document.addEventListener('DOMContentLoaded', checkLoginStatus);
-function toggleMenu() {
+document.addEventListener('DOMContentLoaded', function () {
+  const burger = document.createElement('button');
+  burger.className = 'burger';
+  burger.textContent = '☰';
+  document.querySelector('header').appendChild(burger);
   const nav = document.querySelector('nav');
-  nav.classList.toggle('active');
-  const navLinks = nav.querySelectorAll('a');
-  navLinks.forEach(link => {
+  burger.addEventListener('click', (event) => {
+    event.stopPropagation();
+    nav.classList.toggle('active');
+    burger.textContent = nav.classList.contains('active') ? '✖' : '☰';
+  });
+  document.addEventListener('click', (e) => {
+    if (!nav.contains(e.target) && !burger.contains(e.target)) {
+      nav.classList.remove('active');
+      burger.textContent = '☰';
+    }
+  });
+  document.querySelectorAll('nav a').forEach(link => {
     link.addEventListener('click', () => {
       nav.classList.remove('active');
+      burger.textContent = '☰';
     });
   });
-}
+});
 </script>
-  </main>
+</head>
+<body>
+  <header>
+    <div class="logo">Drawly</div>
+    <nav>
+      <a href="#">Start</a>
+      <a href="#">Preise</a>
+      <a href="#">Coming soon</a>
+      <a href="#">Login</a>
+      <a href="#">🌐</a>
+    </nav>
+  </header>
 
-<!-- Login Modal -->
-<div id="loginModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; justify-content: center; align-items: center;">
-  <div style="background: #fffaf6; padding: 2rem; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); max-width: 400px; width: 90%; margin: auto; display: flex; flex-direction: column; align-items: center;">
-    <h2 style="margin-bottom: 1rem;">Login bei Drawly</h2>
-    <label for="email">E-Mail</label><br>
-    <input id="email" type="email" placeholder="you@example.com" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 12px;">
-    <label for="password">Passwort</label><br>
-    <input id="password" type="password" placeholder="••••••••" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1.5rem 0; border: 1px solid #ccc; border-radius: 12px;">
-    <button onclick="performLogin()" style="width: 100%; background: #c6a58c; color: white; border: none; padding: 0.8rem; border-radius: 20px; font-weight: 600; cursor: pointer;">Einloggen</button>
-    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Noch kein Konto? <a href="#" onclick="showRegisterModal(); return false;" style="color: #5c4438;">Registrieren</a></p>
-  </div>
-</div>
-
-<!-- Register Modal -->
-<div id="registerModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; justify-content: center; align-items: center;">
-  <div style="background: #fffaf6; padding: 2rem; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); max-width: 400px; width: 90%;">
-    <h2 style="margin-bottom: 1rem;">Registrieren bei Drawly</h2>
-    <label for="regName">Name</label><br>
-    <input id="regName" type="text" placeholder="Dein Name" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 12px;">
-    <label for="regEmail">E-Mail</label><br>
-    <input id="regEmail" type="email" placeholder="you@example.com" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 12px;">
-    <label for="regPassword">Passwort</label><br>
-    <input id="regPassword" type="password" placeholder="••••••••" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1.5rem 0; border: 1px solid #ccc; border-radius: 12px;">
-    <button onclick="performRegister()" style="width: 100%; background: #c6a58c; color: white; border: none; padding: 0.8rem; border-radius: 20px; font-weight: 600; cursor: pointer;">Registrieren</button>
-    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Bereits ein Konto? <a href="#" onclick="showLoginModal(); return false;" style="color: #5c4438;">Zum Login</a></p>
-  </div>
-</div>
-
-  <footer style="width: 100%; max-width: 1200px; margin: auto; padding: 4rem 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid #e4d5c8;">
-    <div style="flex: 1; min-width: 250px;">
-      <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Drawly</h2>
-      <p style="font-size: 1rem;">SaaS solutions for the new digital age</p>
+  <section class="hero">
+    <h1 style="font-size: 3rem; font-weight: 800;">Gewinnspiel auslosen – schnell & einfach</h1>
+    <div class="input-section" style="margin-top: 2rem;">
+      <input type="text" placeholder="Link zum Instagram-Post eingeben">
+      <button id="startDraw">Gewinnspiel starten</button>
     </div>
-    <div style="flex: 2; display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-around;">
-      <div>
-        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Solutions</h4>
-        <ul style="list-style: none; padding: 0;">
-          <li style="margin-bottom: 0.3rem;">Giveaway Picker</li>
-          <li style="margin-bottom: 0.3rem;">Hashtag Finder</li>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <section class="video-demo" style="text-align:center; padding: 4rem 2rem; max-width: 1200px; width: 100%; margin: auto; box-sizing: border-box;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; width: 100%; max-width: 100%;">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 16px;"></iframe>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <section class="features">
+    <div class="feature-card" style="text-align: center; padding-left: 2rem; padding-right: 2rem;"></div>
+    <div class="feature-card">
+      <h3>Zertifiziertes Ziehungsprotokoll</h3>
+      <p>Mit Timestamp, Zufalls-ID und Export</p>
+    </div>
+    <div class="feature-card">
+      <h3>Regeln individuell einstellen</h3>
+      <p>Likes, Tags, Hashtags: Wähle, was zählt</p>
+    </div>
+    <div class="feature-card">
+      <h3>Ergebnisse sofort teilen</h3>
+      <p>Ideal für Stories & Reels</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <section class="footer-section">
+    <div class="footer-left">
+      <h2>Drawly</h2>
+      <p>SaaS solutions for the new digital age</p>
+    </div>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>Solutions</h4>
+        <ul>
+          <li>Giveaway Picker</li>
+          <li>Hashtag Finder</li>
         </ul>
       </div>
-      <div>
-        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Company</h4>
-        <ul style="list-style: none; padding: 0;">
-          <li style="margin-bottom: 0.3rem;">About Us</li>
+      <div class="footer-column">
+        <h4>Company</h4>
+        <ul>
+          <li>About Us</li>
         </ul>
       </div>
-      <div>
-        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Connect</h4>
+      <div class="footer-column">
+        <h4>Connect</h4>
         <ul style="display: flex; gap: 1rem; list-style: none; padding: 0;">
           <li><a href="#" aria-label="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" width="24"></a></li>
           <li><a href="#" aria-label="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" width="24"></a></li>
@@ -396,6 +325,48 @@ function toggleMenu() {
         </ul>
       </div>
     </div>
-  </footer>
+  </section>
+
+  <script>
+    document.getElementById('startDraw').addEventListener('click', function () {
+      const link = document.querySelector('input[type="text"]').value;
+      if (link.includes('instagram.com')) {
+        showPreview(link);
+      } else {
+        alert('Bitte einen gültigen Instagram-Link eingeben.');
+      }
+    });
+  </script>
+<div id="previewModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#fffaf6; padding:2rem; border-radius:20px; max-width:400px; width:90%; text-align:center; box-sizing: border-box;">
+    <h2 style="margin-bottom:1rem;">Post-Vorschau</h2>
+    <p style="margin-bottom:1rem;">Der Post <span id="postLink"></span> wird geladen...</p>
+    <button onclick="showLoginModal()" style="padding:0.8rem 1.2rem; border-radius:20px; border:none; background:#c6a58c; color:white; font-weight:600;">Kriterien festlegen</button>
+  </div>
+</div>
+
+<div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000; justify-content:center; align-items:center;">
+  <div style="background:#fffaf6; padding:2rem; border-radius:20px; max-width:400px; width:90%; text-align:center;">
+    <h2 style="margin-bottom:1rem;">Login</h2>
+    <input type="text" placeholder="Benutzername" style="width:100%; padding:0.75rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:12px;">
+    <input type="password" placeholder="Passwort" style="width:100%; padding:0.75rem; margin-bottom:1.5rem; border:1px solid #ccc; border-radius:12px;">
+    <button onclick="proceedToCriteria()" style="padding:0.8rem 1.2rem; border-radius:20px; border:none; background:#c6a58c; color:white; font-weight:600;">Einloggen</button>
+  </div>
+</div>
+
+<script>
+  function showPreview(link) {
+    document.getElementById('postLink').innerText = link;
+    document.getElementById('previewModal').style.display = 'flex';
+  }
+  function showLoginModal() {
+    document.getElementById('previewModal').style.display = 'none';
+    document.getElementById('loginModal').style.display = 'flex';
+  }
+  function proceedToCriteria() {
+    document.getElementById('loginModal').style.display = 'none';
+    alert('✅ Login erfolgreich – hier würde jetzt die Kriterienkarte erscheinen.');
+  }
+</script>
 </body>
 </html>
