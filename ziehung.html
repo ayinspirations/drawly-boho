@@ -78,206 +78,293 @@
       border-radius: 16px;
       margin-bottom: 1rem;
     }
+
     @media (max-width: 480px) {
-    .card {
-      width: 90vw;
-      height: auto;
-      padding: 1rem;
+      .card {
+        width: 90vw;
+        height: auto;
+        padding: 1rem;
+      }
+
+      .card.flipped {
+        width: 90vw;
+        height: auto;
+      }
+
+      .post-preview img {
+        width: 100%;
+        height: auto;
+      }
+
+      input[type="text"], input[type="number"] {
+        font-size: 1rem;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .criteria {
+        font-size: 0.95rem;
+      }
+    }
+      @media (max-width: 768px) {
+      header,
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .card {
+        width: 95vw;
+        padding: 1rem;
+        height: auto;
+      }
+
+      .card.flipped {
+        width: 95vw;
+        height: auto;
+      }
+
+      .post-preview img,
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="number"],
+      button {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .criteria,
+      .post-preview,
+      form {
+        width: 100%;
+        padding: 0 0.5rem;
+      }
+
+      .logo {
+        font-size: 1.4rem;
+      }
+    }
+      .burger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #5c4438;
+      cursor: pointer;
     }
 
-    .card.flipped {
-      width: 90vw;
-      height: auto;
-    }
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        background: #fffaf6;
+        position: absolute;
+        top: 70px;
+        right: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        padding: 1rem;
+        z-index: 1000;
+      }
 
-    .post-preview img {
-      width: 100%;
-      height: auto;
-    }
+      nav.active {
+        display: flex;
+      }
 
-    input[type="text"], input[type="number"] {
-      font-size: 1rem;
+      .burger {
+        display: block;
+        position: absolute;
+        right: 2rem;
+        top: 1.5rem;
+        z-index: 1001;
+      }
     }
-
-    button {
-      width: 100%;
-    }
-
-    .criteria {
-      font-size: 0.95rem;
-    }
-  }
-</style>
+  </style>
 </head>
 <body>
-  <header style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: transparent; border-bottom: 1px solid #e4d5c8; width: 100%; max-width: 1200px; margin: auto;">
+  <header style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: transparent; border-bottom: 1px solid #e4d5c8; width: 100%; max-width: 1200px; margin: auto;">
     <div class="logo" style="font-weight: 700; font-size: 1.8rem; color: #5c4438;">Drawly</div>
-    <nav style="display: flex; gap: 1.5rem; font-size: 0.95rem;">
+    <button class="burger" onclick="toggleMenu()">☰</button>
+    <nav>
       <a href="#" style="color: #5c4438; text-decoration: none;">Start</a>
       <a href="#" style="color: #5c4438; text-decoration: none;">Preise</a>
       <a href="#" style="color: #5c4438; text-decoration: none;">Coming soon</a>
-      <a href="#" style="color: #5c4438; text-decoration: none;">Login</a>
+      <a href="#" onclick="showLoginModal(); return false;" style="color: #5c4438; text-decoration: none;">Login</a>
       <a href="#" style="color: #5c4438; text-decoration: none;">🌐</a>
     </nav>
   </header>
-
   <main style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 1200px; margin: auto;">
-
-  <div class="card" id="flipCard">
-    <div class="front">
-      <div style="display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 1rem;">
-        <div class="input-wrapper">$1</div>
-        <div><button onclick="startDraw()">Gewinnspiel starten</button></div>
+  <div class="card" id="flipCard" style="margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <div class="front">
+    <div style="display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 1rem;">
+      <div class="input-wrapper">
+        <input type="text" id="instaLink" placeholder="Link zum Instagram-Post eingeben">
+      </div>
+      <div>
+        <button onclick="startDraw()">Gewinnspiel starten</button>
       </div>
     </div>
-
-    <div class="back">
-      <div class="post-preview">
-        <img src="https://via.placeholder.com/300x300.png?text=Post+Vorschau" alt="Post Vorschau">
-        <p><strong>Likes:</strong> 245</p>
-        <p><strong>Kommentare:</strong> 68</p>
-        <button onclick="showCriteria()">Kriterien festlegen</button>
-      </div>
+  </div>
+  <div class="back">
+    <div class="post-preview" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+  <img src="https://via.placeholder.com/300x300.png?text=Post+Vorschau" alt="Post Vorschau">
+  <p style="margin: 0;"><strong>Likes:</strong> 245</p>
+  <p style="margin: 0;"><strong>Kommentare:</strong> 68</p>
+  <div style="margin-top: 1rem;">
+    <button onclick="showCriteria()">Kriterien festlegen</button>
+  </div>
     </div>
     <div class="criteria" style="display:none; margin-top: 1rem; text-align:left;">
       <h3>Kriterien festlegen</h3>
-      <form id="criteriaForm" onsubmit="return submitCriteria(event)">
+      <form id="criteriaForm" onsubmit="return submitCriteria(event)" style="max-width: 100%; display: flex; flex-direction: column; align-items: center;">
         <label><strong>Beitrag geliked?</strong></label><br>
         <input type="radio" name="liked" value="yes" checked> Ja
-        <input type="radio" name="liked" value="no"> Nein
-        <br><br>
+        <input type="radio" name="liked" value="no"> Nein<br><br>
 
         <label for="hashtags"><strong>Erwähnte Hashtags</strong> (mit #, durch Komma trennen):</label><br>
-        <input type="text" id="hashtags" name="hashtags" placeholder="#katze, #giveaway"><br><br>
+        <input type="text" id="hashtags" name="hashtags" placeholder="#katze, #giveaway" style="width: 100%; max-width: 300px;"><br><br>
 
         <label for="minMentions"><strong>Mindestanzahl Erwähnungen (1-5):</strong></label><br>
-        <input type="number" id="minMentions" name="minMentions" min="1" max="5"><br><br>
+        <input type="number" id="minMentions" name="minMentions" min="1" max="5" style="width: 100%; max-width: 300px;"><br><br>
 
         <label for="explicitMentions"><strong>Explizite Erwähnungen</strong> (nur mit @, durch Komma trennen):</label><br>
-        <input type="text" id="explicitMentions" name="explicitMentions" placeholder="@username1, @username2"><br><br>
+        <input type="text" id="explicitMentions" name="explicitMentions" placeholder="@username1, @username2" style="width: 100%; max-width: 300px;"><br><br>
 
         <button type="submit">Gewinnspiel auslosen</button>
       </form>
     </div>
   </div>
-
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const postUrl = params.get('url');
-
-  if (postUrl) {
-    document.addEventListener('DOMContentLoaded', () => {
-      const card = document.getElementById('flipCard');
-      const backContent = card.querySelector('.back .post-preview');
-      const urlText = document.createElement('p');
-      urlText.innerHTML = `<strong>Post:</strong> <a href="${postUrl}" target="_blank">${postUrl}</a>`;
-      backContent.insertBefore(urlText, backContent.firstChild);
-      card.classList.add('flipped');
-    });
-  }
-
-  function startDraw() {
-    const link = document.getElementById('instaLink').value;
-    if (link.includes('instagram.com')) {
-      document.getElementById('flipCard').classList.add('flipped');
-    } else {
-      alert('Bitte einen gültigen Instagram-Link eingeben.');
-    }
-  }
-  function showCriteria() {
-    const criteria = document.querySelector('.criteria');
-    const preview = document.querySelector('.post-preview');
-    if (criteria && preview) {
-      preview.style.display = 'none';
-      criteria.style.display = 'block';
-    }
-  }
-  function submitCriteria(event) {
-    event.preventDefault();
-
-    const data = {
-      liked: document.querySelector('input[name="liked"]:checked').value,
-      hashtags: document.getElementById('hashtags').value
-        .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.startsWith('#')),
-      minMentions: parseInt(document.getElementById('minMentions').value, 10),
-      explicitMentions: document.getElementById('explicitMentions').value
-        .split(',')
-        .map(user => user.trim())
-        .filter(user => user.startsWith('@')),
-      postUrl: postUrl || null,
-    };
-
-    console.log("📤 Sende folgende Daten ans Backend:", data);
-
-    const isLoggedIn = localStorage.getItem('drawlyLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      showLoginModal();
-      return false;
-    } // TODO: dynamisch aus API abrufen
-
-    if (!isLoggedIn) {
-      alert('Bitte logge dich ein, um das Gewinnspiel auszulosen.');
-      return false;
-    }
-
-    if (commentCount > 100) {
-      alert('Das Gewinnspiel enthält mehr als 100 Kommentare. Bitte aktiviere ein Abo oder tätige eine Einmalzahlung.');
-      return false;
-    }
-
-    fetch('/api/draw', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      if (!response.ok) throw new Error("Serverfehler");
-      return response.json();
-    })
-    .then(result => {
-      alert("🎉 Ziehung erfolgreich vorbereitet!");
-      console.log(result);
-    })
-    .catch(err => {
-      alert("❌ Fehler bei der Übertragung.");
-      console.error(err);
-    });
-
-    return false;
-  }
-  function showLoginModal() {
-    document.getElementById('loginModal').style.display = 'flex';
-  }
-
-  function performLogin() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    if (email && password) {
-      // Simuliere erfolgreiches Login
-      localStorage.setItem('drawlyLoggedIn', 'true');
+</div>
+  <script>
+    function showRegisterModal() {
       document.getElementById('loginModal').style.display = 'none';
-      alert('✅ Eingeloggt! Jetzt kannst du fortfahren.');
-    } else {
-      alert('Bitte fülle alle Felder aus.');
+      document.getElementById('registerModal').style.display = 'flex';
     }
-  }
-</script>
 
+    function performRegister() {
+      const name = document.getElementById('regName').value;
+      const email = document.getElementById('regEmail').value;
+      const password = document.getElementById('regPassword').value;
+
+      if (!name || !email || !password) {
+        alert('Bitte alle Felder ausfüllen.');
+        return;
+      }
+
+      const userData = {
+        name,
+        email,
+        password
+      };
+
+      console.log("📤 Registrierung wird vorbereitet:", userData);
+
+      fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("Fehler bei der Registrierung");
+        return response.json();
+      })
+      .then(result => {
+        console.log("✅ Registriert:", result);
+        localStorage.setItem('drawlyLoggedIn', 'true');
+        document.getElementById('registerModal').style.display = 'none';
+        alert('✅ Registrierung erfolgreich! Du bist jetzt eingeloggt.');
+      })
+      .catch(err => {
+        alert("❌ Registrierung fehlgeschlagen. Versuche es später erneut.");
+        console.error(err);
+      });
+    }
+  function startDraw() {
+  const link = document.getElementById('instaLink').value;
+  if (link.includes('instagram.com')) {
+    document.getElementById('flipCard').classList.add('flipped');
+  } else {
+    alert('Bitte einen gültigen Instagram-Link eingeben.');
+  }
+}
+function showCriteria() {
+  document.querySelector('.post-preview').style.display = 'none';
+  document.querySelector('.criteria').style.display = 'block';
+}
+function showLoginModal() {
+  document.getElementById('registerModal').style.display = 'none';
+  document.getElementById('loginModal').style.display = 'flex';
+}
+
+function performLogin() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  if (email && password) {
+    localStorage.setItem('drawlyLoggedIn', 'true');
+    document.getElementById('loginModal').style.display = 'none';
+    alert('✅ Eingeloggt! Jetzt kannst du fortfahren.');
+  } else {
+    alert('Bitte fülle alle Felder aus.');
+  }
+}
+
+function checkLoginStatus() {
+  const isLoggedIn = localStorage.getItem('drawlyLoggedIn') === 'true';
+  if (!isLoggedIn) {
+    showLoginModal();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+function toggleMenu() {
+  const nav = document.querySelector('nav');
+  nav.classList.toggle('active');
+  const navLinks = nav.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('active');
+    });
+  });
+}
+</script>
   </main>
 
+<!-- Login Modal -->
 <div id="loginModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; justify-content: center; align-items: center;">
-  <div style="background: #fffaf6; padding: 2rem; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); max-width: 400px; width: 90%;">
+  <div style="background: #fffaf6; padding: 2rem; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); max-width: 400px; width: 90%; margin: auto; display: flex; flex-direction: column; align-items: center;">
     <h2 style="margin-bottom: 1rem;">Login bei Drawly</h2>
     <label for="email">E-Mail</label><br>
     <input id="email" type="email" placeholder="you@example.com" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 12px;">
     <label for="password">Passwort</label><br>
     <input id="password" type="password" placeholder="••••••••" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1.5rem 0; border: 1px solid #ccc; border-radius: 12px;">
     <button onclick="performLogin()" style="width: 100%; background: #c6a58c; color: white; border: none; padding: 0.8rem; border-radius: 20px; font-weight: 600; cursor: pointer;">Einloggen</button>
-    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Noch kein Konto? <a href="#" style="color: #5c4438;">Registrieren</a></p>
+    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Noch kein Konto? <a href="#" onclick="showRegisterModal(); return false;" style="color: #5c4438;">Registrieren</a></p>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div id="registerModal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; justify-content: center; align-items: center;">
+  <div style="background: #fffaf6; padding: 2rem; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); max-width: 400px; width: 90%;">
+    <h2 style="margin-bottom: 1rem;">Registrieren bei Drawly</h2>
+    <label for="regName">Name</label><br>
+    <input id="regName" type="text" placeholder="Dein Name" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 12px;">
+    <label for="regEmail">E-Mail</label><br>
+    <input id="regEmail" type="email" placeholder="you@example.com" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 12px;">
+    <label for="regPassword">Passwort</label><br>
+    <input id="regPassword" type="password" placeholder="••••••••" style="width: 100%; padding: 0.75rem; margin: 0.5rem 0 1.5rem 0; border: 1px solid #ccc; border-radius: 12px;">
+    <button onclick="performRegister()" style="width: 100%; background: #c6a58c; color: white; border: none; padding: 0.8rem; border-radius: 20px; font-weight: 600; cursor: pointer;">Registrieren</button>
+    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">Bereits ein Konto? <a href="#" onclick="showLoginModal(); return false;" style="color: #5c4438;">Zum Login</a></p>
   </div>
 </div>
 
